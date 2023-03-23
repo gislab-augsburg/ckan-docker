@@ -1,0 +1,37 @@
+{# Adds 'Add Dataset' button #}
+
+{% set dataset_type = dataset_type if dataset_type else h.default_package_type() %}
+{% set link_label = h.humanize_entity_type('package', dataset_type, 'add link') or _("Add Dataset Standard") %}
+{% set route_name = dataset_type ~ '.new' %}
+
+{% if group %}
+    {% link_for link_label, named_route=route_name, group=group, class_='btn btn-primary', icon='plus-square' %}
+{% else %}
+    {% link_for link_label, named_route=route_name, class_='btn btn-primary', icon='plus-square' %}
+{% endif %}
+
+
+{# Adds 'Add Camel-Photo' button #}
+
+{% set dataset_type = dataset_type if dataset_type else h.default_package_type() %}
+{% set link_label = h.humanize_entity_type('package', dataset_type, 'add link') or _("Add Dataset Camel") %}
+{% set route_name = "camel-photos" ~ '.new' %}
+
+{% if group %}
+    {% link_for link_label, named_route=route_name, group=group, class_='btn btn-primary', icon='plus-square' %}
+{% else %}
+    {% link_for link_label, named_route=route_name, class_='btn btn-primary', icon='plus-square' %}
+{% endif %}
+
+
+{# Adds 'Add ckan_formpages' button #}
+
+{% set dataset_type = dataset_type if dataset_type else h.default_package_type() %}
+{% set link_label = h.humanize_entity_type('package', dataset_type, 'add link') or _("Add Dataset Formpages") %}
+{% set route_name = "formpages" ~ '.new' %}
+
+{% if group %}
+    {% link_for link_label, named_route=route_name, group=group, class_='btn btn-primary', icon='plus-square' %}
+{% else %}
+    {% link_for link_label, named_route=route_name, class_='btn btn-primary', icon='plus-square' %}
+{% endif %}
