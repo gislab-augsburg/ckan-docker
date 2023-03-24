@@ -55,3 +55,17 @@ COPY extensions/add_dataset.html /srv/app/src/ckan/ckan/templates/snippets/add_d
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
+
+### Spatial ###
+#RUN apk add --no-cache python3-dev build-base gdal-dev
+RUN pip install --upgrade pip
+RUN pip install -e git+https://github.com/ckan/ckanext-spatial.git#egg=ckanext-spatial
+RUN apk add geos-dev proj proj-util proj-dev
+RUN export PROJ_DIR=/usr/bin
+RUN PROJ_DIR=/usr/ pip install pyproj
+#RUN pip install pyproj==2.6.1
+#RUN pip3 install -e "git+https://github.com/ckan/ckanext-spatial.git#egg=ckanext-spatial"
+#RUN apk add proj proj-util
+COPY extensions/spatial/requirements.txt /srv/app/src/ckanext-spatial/requirements.txt
+RUN pip3 install -r /srv/app/src/ckanext-spatial/requirements.txt
+COPY extensions/spatial/search.html srv/app/src/ckan/ckanext/example_idatasetform/templates/package/search.html
