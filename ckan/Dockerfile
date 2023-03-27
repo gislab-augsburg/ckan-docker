@@ -1,6 +1,7 @@
 FROM ckan/ckan-base:ckan-2.10.0
 #FROM ckan/ckan-base:dev-v2.10
 #FROM martymcfly333/ckan-docker-edit-ini:latest
+#FROM ghcr.io/tum-gis/ckan-sddi
 
 # Set up environment variables
 ENV APP_DIR=/srv/app
@@ -68,4 +69,4 @@ RUN PROJ_DIR=/usr/ pip install pyproj
 #RUN apk add proj proj-util
 COPY extensions/spatial/requirements.txt /srv/app/src/ckanext-spatial/requirements.txt
 RUN pip3 install -r /srv/app/src/ckanext-spatial/requirements.txt
-COPY extensions/spatial/search.html srv/app/src/ckan/ckanext/example_idatasetform/templates/package/search.html
+COPY extensions/spatial/search.html /srv/app/src/ckan/ckan/templates/package/search.html
