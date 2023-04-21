@@ -1,0 +1,13 @@
+to be done for harvesting after the first docker compose build and compose up:
+
+mb@pc-geoinfo:~$ docker exec -it ckan sh
+/srv/app # ckan --config=ckan.ini harvester initdb
+
+
+start for harvesting after every docker compose up (can be automated later with):
+
+mb@pc-geoinfo:~$ docker exec -it ckan sh
+/srv/app # ckan --config=ckan.ini harvester gather-consumer
+
+mb@pc-geoinfo:~$ docker exec -it ckan sh
+/srv/app # ckan --config=ckan.ini harvester fetch-consumer
