@@ -79,3 +79,9 @@ resource_fields:
   label: Date Taken
   label_time: Time Taken
   preset: datetime
+
+- field_name: spatial
+  label: spatial
+
+- field_name: spatial_bbox
+  label: spatial_bbox
