@@ -1,0 +1,3 @@
+[submodule "sddi-ckan-docker"]
+	path = sddi-ckan-docker
+	url = https://github.com/gislab-augsburg/sddi-ckan-docker.git
