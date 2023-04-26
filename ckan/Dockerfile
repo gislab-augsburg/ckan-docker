@@ -1,4 +1,5 @@
 FROM ckan/ckan-base:ckan-2.10.0
+#FROM ghcr.io/tum-gis/ckan-sddi-base:latest
 #FROM ckan/ckan-base:dev-v2.10
 #FROM martymcfly333/ckan-docker-edit-ini:latest
 #FROM ghcr.io/tum-gis/ckan-sddi
@@ -41,11 +42,12 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@master#egg=
 # will also require gather_consumer and fetch_consumer processes running (please see https://github.com/ckan/ckanext-harvest)
 
 ### Scheming ###
-#RUN  pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
-###XX RUN  pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
-###XX COPY extensions/camel_photos.yaml /srv/app/src/ckanext-scheming/ckanext/scheming/camel_photos.yaml
-###XX COPY extensions/ckan_dataset.yaml /srv/app/src/ckanext-scheming/ckanext/scheming/ckan_dataset.yaml
-###XX COPY extensions/add_dataset.html /srv/app/src/ckan/ckan/templates/snippets/add_dataset.html
+RUN  pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
+RUN  pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
+COPY extensions/camel_photos.yaml /srv/app/src/ckanext-scheming/ckanext/scheming/camel_photos.yaml
+#COPY extensions/ckan_dataset.yaml /srv/app/src/ckanext-scheming/ckanext/scheming/ckan_dataset.yaml
+COPY extensions/add_dataset.html /srv/app/src/ckan/ckan/templates/snippets/add_dataset.html
+
 ### Pages ###
 #RUN  pip3 install -e git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages
 

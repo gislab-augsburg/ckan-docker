@@ -82,6 +82,4 @@ resource_fields:
 
 - field_name: spatial
   label: spatial
-
-- field_name: spatial_bbox
-  label: spatial_bbox
+  
