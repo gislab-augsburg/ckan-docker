@@ -1,4 +1,4 @@
-FROM nginx:stable-alpine
+FROM nginxinc/nginx-unprivileged
 
 ENV NGINX_DIR=/etc/nginx
 
