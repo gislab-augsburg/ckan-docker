@@ -1,4 +1,4 @@
-FROM nginx:stable-alpine
+FROM nginx:latest
 
 ENV NGINX_DIR=/etc/nginx
 
