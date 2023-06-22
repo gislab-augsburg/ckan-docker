@@ -1,0 +1,106 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: nginx:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: nginx/
+    git:
+      ref: openshift
+      uri: https://github.com/gislab-augsburg/ckan-docker.git
+    type: ""
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+    type: ""
+  triggers:
+    - type: ConfigChange
+status:
+  lastVersion: 0
+
+---
+
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: nginx
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/ckan-docker-ga-default: "true"
+        io.kompose.service: nginx
+    spec:
+      containers:
+        - image: ' '
+          name: nginx
+          ports:
+            - containerPort: 80
+              hostIP: 0.0.0.0
+            - containerPort: 443
+              hostIP: 0.0.0.0
+          resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - nginx
+        from:
+          kind: ImageStreamTag
+          name: nginx:latest
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  ports:
+    - name: "81"
+      port: 81
+      targetPort: 80
+    - name: "8443"
+      port: 8443
+      targetPort: 443
+  selector:
+    io.kompose.service: nginx
+status:
+  loadBalancer: {}
+
+---
+
