@@ -10,3 +10,7 @@ RUN mkdir -p ${NGINX_DIR}/certs
 COPY setup/ckan-local.* ${NGINX_DIR}/certs/
 
 EXPOSE 81
+
+# Changes for openshift permissions
+RUN chgrp -R 0 /var/cache/nginx/ && \
+    chmod -R g=u /var/cache/nginx/
