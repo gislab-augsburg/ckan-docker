@@ -12,5 +12,5 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
     fi ;
 
 # Changes for openshift permissions
-RUN chgrp -R 0 /some/directory && \
-    chmod -R g=u /some/directory
+RUN chgrp -R 0 /srv/app && \
+    chmod -R g=u /srv/app
