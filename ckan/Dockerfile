@@ -1,3 +1,5 @@
+USER 1002890000
+
 FROM ckan/ckan-base:2.10.0
 #FROM ckan/ckan-base:2.9.9
 
