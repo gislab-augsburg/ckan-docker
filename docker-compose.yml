@@ -70,8 +70,8 @@ services:
   solr:
     container_name: ${SOLR_CONTAINER_NAME}
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
-    environment:
-      - SOLR_OPTS=-XX:-UseLargePages
+    #environment:
+      #- SOLR_OPTS=-XX:-UseLargePages
     volumes:
       - solr_data:/var/solr
     restart: unless-stopped
