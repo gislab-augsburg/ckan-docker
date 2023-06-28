@@ -14,3 +14,6 @@ EXPOSE 81
 # Changes for openshift permissions
 RUN chgrp -R 0 /var/cache/nginx/ && \
     chmod -R g=u /var/cache/nginx/
+
+RUN chgrp -R 0 /var/run && \
+    chmod -R g=u /var/run/
