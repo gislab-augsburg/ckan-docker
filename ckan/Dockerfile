@@ -14,3 +14,5 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 # Changes for openshift permissions
 RUN chgrp -R 0 /srv/app && \
     chmod -R g=u /srv/app
+
+RUN chmod 775 /usr/sbin/uwsgi
