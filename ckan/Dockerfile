@@ -15,9 +15,12 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 RUN chgrp -R 0 /srv/app && \
     chmod -R g=u /srv/app
 
-RUN chmod 775 /tmp/supervisor.sock
+#RUN chmod 775 /tmp/supervisor.sock
 
 #RUN chgrp -R 0 /usr/sbin && \
     #chmod -R g=u /usr/sbin
+
+RUN chgrp -R 0 /tmp && \
+    chmod -R g=u /tmp
 
 
