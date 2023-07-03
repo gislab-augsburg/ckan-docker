@@ -24,12 +24,13 @@ RUN chgrp -R 0 /usr/sbin/uwsgi && \
 RUN chgrp -R 0 /tmp && \
     chmod -R g=u /tmp
 
-RUN chmod 775 /srv/app
-RUN chmod 775 /tmp
-RUN chmod 775 /usr/sbin/uwsgi
+RUN chmod 777 /srv/app
+RUN chmod 777 /tmp
+RUN chmod 777 /usr/sbin/uwsgi
 
-COPY setup/start_ckan.sh /srv/app/start_ckan.sh
+RUN chmod 777 /etc/uwsgi/uwsgi.ini
+RUN chmod 777 /srv/app/src/ckan/ckan-uwsgi.ini
 
-RUN supervisord --configuration /etc/supervisord.conf & uwsgi --uid 92 --gid 92
+#RUN sh /srv/app/start_ckan.sh
 
 
