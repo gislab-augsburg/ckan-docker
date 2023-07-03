@@ -33,10 +33,12 @@ RUN chmod 777 /srv/app/src/ckan/ckan-uwsgi.ini
 
 #RUN apk add --no-cache su-exec
 
-RUN set -ex && apk --no-cache add sudo
+#RUN set -ex && apk --no-cache add sudo
 
 
-COPY setup/start_ckan_2.sh /srv/app/start_ckan_2.sh
+COPY setup/start_ckan_2.sh /srv/app/start_ckan.sh
+RUN chmod 777 /srv/app/start_ckan.sh
+
 
 #RUN sh /srv/app/start_ckan.sh
 
