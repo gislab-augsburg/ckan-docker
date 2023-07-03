@@ -28,4 +28,6 @@ RUN chmod 775 /srv/app
 RUN chmod 775 /tmp
 RUN chmod 775 /usr/sbin/uwsgi
 
+RUN sh /srv/app/start_ckan.sh
+
 
