@@ -28,6 +28,8 @@ RUN chmod 775 /srv/app
 RUN chmod 775 /tmp
 RUN chmod 775 /usr/sbin/uwsgi
 
-RUN sh /srv/app/start_ckan.sh
+COPY setup/start_ckan.sh /srv/app/start_ckan.sh
+
+RUN supervisord --configuration /etc/supervisord.conf & uwsgi --uid 92 --gid 92
 
 
