@@ -15,29 +15,31 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 RUN chgrp -R 0 /srv/app && \
     chmod -R g=u /srv/app
 
-RUN chgrp -R 0 /usr/sbin && \
-    chmod -R g=u /usr/sbin
+#RUN chgrp -R 0 /usr/sbin && \
+    #chmod -R g=u /usr/sbin
 
-RUN chgrp -R 0 /usr/sbin/uwsgi && \
-    chmod -R g=u /usr/sbin/uwsgi
+#RUN chgrp -R 0 /usr/sbin/uwsgi && \
+    #chmod -R g=u /usr/sbin/uwsgi
 
-RUN chgrp -R 0 /tmp && \
-    chmod -R g=u /tmp
+#RUN chgrp -R 0 /tmp && \
+    #chmod -R g=u /tmp
 
-RUN chmod 777 /srv/app
-RUN chmod 777 /tmp
-RUN chmod 777 /usr/sbin/uwsgi
+#RUN chmod 777 /srv/app
+#RUN chmod 777 /tmp
+#RUN chmod 777 /usr/sbin/uwsgi
 
-RUN chmod 777 /etc/uwsgi/uwsgi.ini
-RUN chmod 777 /srv/app/src/ckan/ckan-uwsgi.ini
+#RUN chmod 777 /etc/uwsgi/uwsgi.ini
+#RUN chmod 777 /srv/app/src/ckan/ckan-uwsgi.ini
 
 #RUN apk add --no-cache su-exec
 
 #RUN set -ex && apk --no-cache add sudo
 
 
-COPY setup/start_ckan_2.sh /srv/app/start_ckan.sh
-RUN chmod 777 /srv/app/start_ckan.sh
+#COPY setup/start_ckan_2.sh /srv/app/start_ckan.sh
+#RUN chmod 777 /srv/app/start_ckan.sh
+
+USER ckan
 
 
 #RUN sh /srv/app/start_ckan.sh
