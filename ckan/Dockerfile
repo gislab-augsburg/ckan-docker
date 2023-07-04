@@ -18,21 +18,21 @@ RUN chgrp -R 0 /srv/app && \
 RUN chgrp -R 0 /etc && \
     chmod -R g=u /etc
 
-#RUN chgrp -R 0 /usr/sbin && \
-    #chmod -R g=u /usr/sbin
+RUN chgrp -R 0 /usr/sbin && \
+    chmod -R g=u /usr/sbin
 
-#RUN chgrp -R 0 /usr/sbin/uwsgi && \
-    #chmod -R g=u /usr/sbin/uwsgi
+RUN chgrp -R 0 /usr/sbin/uwsgi && \
+    chmod -R g=u /usr/sbin/uwsgi
 
-#RUN chgrp -R 0 /tmp && \
-    #chmod -R g=u /tmp
+RUN chgrp -R 0 /tmp && \
+    chmod -R g=u /tmp
 
-#RUN chmod 777 /srv/app
-#RUN chmod 777 /tmp
-#RUN chmod 777 /usr/sbin/uwsgi
+RUN chmod 777 /srv/app
+RUN chmod 777 /tmp
+RUN chmod 777 /usr/sbin/uwsgi
 
-#RUN chmod 777 /etc/uwsgi/uwsgi.ini
-#RUN chmod 777 /srv/app/src/ckan/ckan-uwsgi.ini
+RUN chmod 777 /etc/uwsgi/uwsgi.ini
+RUN chmod 777 /srv/app/src/ckan/ckan-uwsgi.ini
 
 #RUN apk add --no-cache su-exec
 
