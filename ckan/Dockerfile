@@ -38,16 +38,33 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 
 #RUN set -ex && apk --no-cache add sudo
 
-
 #COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
 #RUN chmod 775 /srv/app/start_ckan.sh
 
 #USER ckan
 
-
 #RUN sh /srv/app/start_ckan.sh
 
+#RUN chmod -R 777 /
 
-RUN chmod -R 777 /
+## Allow all but /proc and /sys
+
+RUN chmod -R 777 /bin
+RUN chmod -R 777 /dev 
+RUN chmod -R 777 /docker-entrypoint.d
+RUN chmod -R 777 /etc
+RUN chmod -R 777 /home 
+RUN chmod -R 777 /lib 
+RUN chmod -R 777 /media
+RUN chmod -R 777 /mnt
+RUN chmod -R 777 /opt
+RUN chmod -R 777 /proc
+RUN chmod -R 777 /root
+RUN chmod -R 777 /run
+RUN chmod -R 777 /sbin
+RUN chmod -R 777 /srv
+RUN chmod -R 777 /tmp
+RUN chmod -R 777 /usr
+RUN chmod -R 777 /var
 
 
