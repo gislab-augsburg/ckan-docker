@@ -33,10 +33,6 @@ then
         echo        
     done                                                                                                                                                                 
 fi   
-
-# Check
-echo "MB Check 1"
-whoami
                                                                                                                                                                          
 # Set the common uwsgi options                                                                                                                                           
 UWSGI_OPTS="--plugins http,python \                                                                                                                                      
