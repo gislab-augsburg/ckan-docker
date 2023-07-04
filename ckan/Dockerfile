@@ -37,7 +37,7 @@ RUN chgrp -R 0 /srv/app && \
 
 
 COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
-#RUN chmod 777 /srv/app/start_ckan.sh
+RUN chmod 775 /srv/app/start_ckan.sh
 
 #USER ckan
 
