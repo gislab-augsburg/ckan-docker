@@ -36,7 +36,7 @@ fi
 
 # Check
 echo "MB Check 1"
-echo whoami
+whoami
                                                                                                                                                                          
 # Set the common uwsgi options                                                                                                                                           
 UWSGI_OPTS="--plugins http,python \                                                                                                                                      
@@ -54,7 +54,7 @@ if [ $? -eq 0 ]
 then                                                                                                                                                                     
     # Start supervisord 
     echo "MB Check 2"
-    echo whoami                                                                                                                                                 
+    whoami                                                                                                                                                 
     supervisord --configuration /etc/supervisord.conf &                                                                                                                  
     # Start uwsgi                                                                                                                                                        
     uwsgi $UWSGI_OPTS                                                                                                                                                    
