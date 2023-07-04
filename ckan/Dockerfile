@@ -58,7 +58,6 @@ RUN chmod -R 777 /lib
 RUN chmod -R 777 /media
 RUN chmod -R 777 /mnt
 RUN chmod -R 777 /opt
-RUN chmod -R 777 /proc
 RUN chmod -R 777 /root
 RUN chmod -R 777 /run
 RUN chmod -R 777 /sbin
