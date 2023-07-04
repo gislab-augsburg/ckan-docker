@@ -15,14 +15,17 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 RUN chgrp -R 0 /srv/app && \
     chmod -R g=u /srv/app
 
+RUN chgrp -R 0 /etc && \
+    chmod -R g=u /etc
+
 #RUN chgrp -R 0 /usr/sbin && \
     #chmod -R g=u /usr/sbin
 
 #RUN chgrp -R 0 /usr/sbin/uwsgi && \
     #chmod -R g=u /usr/sbin/uwsgi
 
-RUN chgrp -R 0 /tmp && \
-    chmod -R g=u /tmp
+#RUN chgrp -R 0 /tmp && \
+    #chmod -R g=u /tmp
 
 #RUN chmod 777 /srv/app
 #RUN chmod 777 /tmp
