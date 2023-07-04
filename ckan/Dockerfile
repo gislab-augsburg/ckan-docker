@@ -36,10 +36,10 @@ RUN chgrp -R 0 /srv/app && \
 #RUN set -ex && apk --no-cache add sudo
 
 
-#COPY setup/start_ckan_2.sh /srv/app/start_ckan.sh
+COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
 #RUN chmod 777 /srv/app/start_ckan.sh
 
-USER ckan
+#USER ckan
 
 
 #RUN sh /srv/app/start_ckan.sh

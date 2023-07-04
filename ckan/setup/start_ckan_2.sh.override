@@ -42,8 +42,7 @@ whoami
 UWSGI_OPTS="--plugins http,python \                                                                                                                                      
             --socket /tmp/uwsgi.sock \                                                                                                                                   
             --wsgi-file /srv/app/wsgi.py \                                                                                                                               
-            --module wsgi:application \                                                                                                                                  
-            --uid 92 --gid 92 \                                                                                                                                          
+            --module wsgi:application \                                                                                                                                                                                                                                                                           
             --http 0.0.0.0:5000 \                                                                                                                                        
             --master --enable-threads \                                                                                                                                  
             --lazy-apps \                                                                                                                                                
@@ -52,9 +51,7 @@ UWSGI_OPTS="--plugins http,python \
                                                                                                                                                                          
 if [ $? -eq 0 ]                                                                                                                                                          
 then                                                                                                                                                                     
-    # Start supervisord 
-    echo "MB Check 2"
-    whoami                                                                                                                                                 
+    # Start supervisord                                                                                                                                              
     supervisord --configuration /etc/supervisord.conf &                                                                                                                  
     # Start uwsgi                                                                                                                                                        
     uwsgi $UWSGI_OPTS                                                                                                                                                    
