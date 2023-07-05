@@ -1,4 +1,4 @@
-## Translate ckan-docker to openshift input files for LHM CAP with kompose and adaptations
+## Translate ckan-docker to openshift input yaml files for LHM CAP with kompose and adaptations
 ## Needs docker-compose and kompose to be installed
 ## Import the resulting capfiles to openshift with 'oc create -f ..'
 ## For that, be sure to be logged into openshift and right project, check with "oc projects"
@@ -229,6 +229,31 @@ for f in files:
             out_4.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1').replace('ref: main', branch).replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo))
         l.close()
         out_4.write('\n---\n\n')
+
+
+# Add additional readymade yaml files for services and route
+
+path_5 = path + '/openshift_add/'
+
+files = os.listdir(path_5)
+for f in files:
+    if "ckan" not in f:
+        #print(f)
+        l = open(path_5 + f,'r')
+        lines = l.readlines()
+        for line in lines:
+            out_2.write(line)
+        l.close()
+        out_2.write('\n---\n\n')
+
+    elif "ckan" in f:
+        #print(f)
+        l = open(path_5 + f,'r')
+        lines = l.readlines()
+        for line in lines:
+            out_3.write(line)
+        l.close()
+        out_3.write('\n---\n\n')
 
 out_1.close()
 out_2.close()

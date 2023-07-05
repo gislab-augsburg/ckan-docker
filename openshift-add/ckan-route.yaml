@@ -1,0 +1,14 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: ckan-route
+  namespace: udpkatalog-dev
+  labels:
+    io.kompose.service: ckan
+spec:
+  host: ckan-route-udpkatalog-dev.apps.capk.muenchen.de
+  to:
+    kind: Service
+    name: ckan
+  port:
+    targetPort: '5000'
