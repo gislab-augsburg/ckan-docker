@@ -1,6 +1,7 @@
 
-## Import the created capfiles to openshift
-## For that, be sure to be logged into openshift and right project, check with "oc projects"
+## Import the created capfiles to openshift.
+## Needs oc to be installed.
+## Make sure to be logged into openshift CLI and right project, check with "oc projects".
 
 import os
 
