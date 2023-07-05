@@ -16,6 +16,7 @@
 * [The ckanext-envvars extension](#envvars)
 * [The CKAN_SITE_URL parameter](#CKAN_SITE_URL)
 * [Changing the base image](#Changing-the-base-image)
+* [Install CKAN on LHM Container Application Platform (OpenShift)](#install-ckan-on-cap)
 
 
 ## 1.  Overview
@@ -239,3 +240,24 @@ For convenience the CKAN_SITE_URL parameter should be set in the .env file. For 
 
 The base image used in the CKAN Dockerfile and Dockerfile.dev can be changed so a different DockerHub image is used eg: ckan/ckan-base:2.9.9
 could be used instead of ckan/ckan-base:2.10.1
+
+## 14.  Install CKAN on CAP
+
+This is about how to install CKAN and its dependencies on LHM OpenShift Container Application Platform (CAP).
+
+* Make sure you have docker-compose, kompose and oc installed.
+
+* Log into openshift CLI (oc login) and switch to your openshift project.
+
+* If necessary change the repo and branch values in combine-yamls.py in order to define a repository with custom dockerfiles to be used for the buildconfigs.
+
+* Translate the docker-compose files to yaml files for openshift import:
+
+	python combine-yamls.py
+
+* Împort the generated yaml files. Wait for the first import until the openshift runtime pods are up and running, then do the second import:
+
+	python openshift-import-1.py
+
+	python openshift-import-2.py
+
