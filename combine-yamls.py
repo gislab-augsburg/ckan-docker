@@ -233,7 +233,7 @@ for f in files:
 
 # Add additional readymade yaml files for services and route
 
-path_5 = path + '/openshift_add/'
+path_5 = path + '/openshift-add/'
 
 files = os.listdir(path_5)
 for f in files:
