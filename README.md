@@ -247,9 +247,9 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
 
 * Make sure you have docker-compose, kompose and oc installed.
 
-* Log into openshift CLI (oc login) and switch to your openshift project.
+* Log into openshift CLI (`oc login`) and switch to your openshift project.
 
-* If necessary change the repo and branch values in combine-yamls.py in order to define a repository with custom dockerfiles to be used for the buildconfigs.
+* If necessary change the `repo` and `branch` values in `combine-yamls.py` in order to define a repository with custom dockerfiles to be used for the buildconfigs.
 
 * Translate the docker-compose files to yaml files for openshift import:
 
@@ -260,6 +260,6 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
 * Import the generated yaml files. Wait for the first import until the openshift runtime pods are up and running, then do the second import:
 
 	`python openshift-import-1.py`
-  
-	`python openshift-import-1.py`
+
+	`python openshift-import-2.py`
 
