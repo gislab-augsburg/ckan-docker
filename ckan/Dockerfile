@@ -46,15 +46,18 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 
 #Create user to arbitrary openshift uid/ gid:
 
-RUN addgroup -g 1002890000 arbigroup
-RUN adduser --uid 1002890000 arbi arbigroup
+#RUN addgroup -g 1002890000 arbigroup
+#RUN adduser --uid 1002890000 arbi arbigroup
+RUN chmod -R 777 /etc
+COPY setup/passwd /etc/passwd
+chmod 777 /etc/passwd
 
 ## Allow all but /proc and /sys
 
 RUN chmod -R 777 /bin
 RUN chmod -R 777 /dev 
 RUN chmod -R 777 /docker-entrypoint.d
-RUN chmod -R 777 /etc
+#RUN chmod -R 777 /etc
 RUN chmod -R 777 /home 
 RUN chmod -R 777 /lib 
 RUN chmod -R 777 /media
