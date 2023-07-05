@@ -45,12 +45,12 @@ UWSGI_OPTS="--plugins http,python \
             -p 2 -L -b 32768 --vacuum \
             --harakiri $UWSGI_HARAKIRI                                                                                                                                 
                                                                                                                                                                          
-if [ $? -eq 0 ]                                                                                                                                                          
-then                                                                                                                                                                     
-    # Start supervisord                                                                                                                                              
-    supervisord --configuration /etc/supervisord.conf &                                                                                                            
-    # Start uwsgi                                                                                                                                                        
-    uwsgi $UWSGI_OPTS                                                                                                                                                    
-else                                                                                                                                                                     
-  echo "[prerun] failed...not starting CKAN."                                                                                                                            
+if [ $? -eq 0 ]
+then
+    # Start supervisord
+    supervisord --configuration /etc/supervisord.conf &
+    # Start uwsgi
+    sudo -u ckan -EH uwsgi $UWSGI_OPTS
+else
+  echo "[prerun] failed...not starting CKAN."
 fi
