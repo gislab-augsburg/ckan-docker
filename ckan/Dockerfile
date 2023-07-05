@@ -50,7 +50,7 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 #RUN adduser --uid 1002890000 arbi arbigroup
 RUN chmod -R 777 /etc
 COPY setup/passwd /etc/passwd
-chmod 777 /etc/passwd
+RUN chmod 777 /etc/passwd
 
 ## Allow all but /proc and /sys
 
