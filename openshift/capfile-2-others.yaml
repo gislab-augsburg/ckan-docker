@@ -1,0 +1,328 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: db:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: postgresql/
+    git:
+      ref: openshift
+      uri: https://github.com/gislab-augsburg/ckan-docker.git
+    type: ""
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      env:
+        - name: DATASTORE_READONLY_PASSWORD
+          value: datastore
+        - name: POSTGRES_PASSWORD
+          value: ckan
+    type: ""
+  triggers:
+    - type: ConfigChange
+status:
+  lastVersion: 0
+
+---
+
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: db
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/ckan-docker-ga-default: "true"
+        io.kompose.service: db
+    spec:
+      containers:
+        - env:
+            - name: DATASTORE_READONLY_PASSWORD
+              value: datastore
+            - name: PGDATA
+              value: /var/lib/postgresql/data/db
+            - name: POSTGRES_PASSWORD
+              value: ckan
+          image: ' '
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - ckan
+          name: db
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pg-data
+      restartPolicy: Always
+      volumes:
+        - name: pg-data
+          emptyDir: {}
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - db
+        from:
+          kind: ImageStreamTag
+          name: db:latest
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
+
+---
+
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: datapusher
+  name: datapusher
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: datapusher
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/ckan-docker-ga-default: "true"
+        io.kompose.service: datapusher
+    spec:
+      containers:
+        - image: ' '
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - -qO
+                - /dev/null
+                - http://localhost:8800
+          name: datapusher
+          resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - datapusher
+        from:
+          kind: ImageStreamTag
+          name: datapusher:0.0.20
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
+
+---
+
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: redis
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/ckan-docker-ga-default: "true"
+        io.kompose.service: redis
+    spec:
+      containers:
+        - image: ' '
+          livenessProbe:
+            exec:
+              command:
+                - redis-cli
+                - -e
+                - QUIT
+          name: redis
+          resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - redis
+        from:
+          kind: ImageStreamTag
+          name: redis:6
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
+
+---
+
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: solr
+  name: solr
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: solr
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/ckan-docker-ga-default: "true"
+        io.kompose.service: solr
+    spec:
+      containers:
+        - env:
+            - name: GC_TUNE
+              value: -XX:-UseLargePages
+            - name: SOLR_OPTS
+              value: -XX:-UseLargePages
+          image: ' '
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - -qO
+                - /dev/null
+                - http://localhost:8983/solr/
+          name: solr
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/solr
+              name: solr-data
+      restartPolicy: Always
+      volumes:
+        - name: solr-data
+          emptyDir: {}
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - solr
+        from:
+          kind: ImageStreamTag
+          name: solr:2.10-spatial
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: db
+status:
+  loadBalancer: {}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  ports:
+    - name: "6379"
+      port: 6379
+      targetPort: 6379
+  selector:
+    io.kompose.service: redis
+status:
+  loadBalancer: {}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: solr
+  name: solr
+spec:
+  ports:
+    - name: "8983"
+      port: 8983
+      targetPort: 8983
+  selector:
+    io.kompose.service: solr
+status:
+  loadBalancer: {}
+---
+
