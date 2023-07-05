@@ -44,6 +44,11 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 
 #RUN chmod -R 777 /
 
+#Create user to arbitrary openshift uid/ gid:
+
+RUN addgroup -g 1002890000 arbigroup
+RUN adduser --uid 1002890000 arbi arbigroup
+
 ## Allow all but /proc and /sys
 
 RUN chmod -R 777 /bin
@@ -66,7 +71,6 @@ RUN chmod -R 777 /var
 COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
 RUN chmod 777 /srv/app/start_ckan.sh
 
-RUN groupadd -g 1002890000 arbigroup
-RUN useradd -g 1002890000 -u 1002890000 arbi
+
 
 
