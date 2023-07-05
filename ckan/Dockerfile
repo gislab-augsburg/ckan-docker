@@ -38,9 +38,6 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 
 #RUN set -ex && apk --no-cache add sudo
 
-#COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
-#RUN chmod 775 /srv/app/start_ckan.sh
-
 #USER ckan
 
 #RUN sh /srv/app/start_ckan.sh
@@ -65,5 +62,11 @@ RUN chmod -R 777 /srv
 RUN chmod -R 777 /tmp
 RUN chmod -R 777 /usr
 RUN chmod -R 777 /var
+
+COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
+RUN chmod 777 /srv/app/start_ckan.sh
+
+RUN groupadd -g 1002890000 arbigroup
+RUN useradd -g 1002890000 -u 1002890000 arbi
 
 
