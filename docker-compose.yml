@@ -42,7 +42,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "ckan:5000"]
-    
+   
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
