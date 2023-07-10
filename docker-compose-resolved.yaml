@@ -93,7 +93,7 @@ services:
       - wget
       - -qO
       - /dev/null
-      - http://localhost:8800
+      - datapusher:8800
     image: ckan/ckan-base-datapusher:0.0.20
     networks:
       default: null
@@ -168,7 +168,7 @@ services:
       - wget
       - -qO
       - /dev/null
-      - http://localhost:8983/solr/
+      - solr:8983/solr/
     image: ckan/ckan-solr:2.10-spatial
     networks:
       default: null

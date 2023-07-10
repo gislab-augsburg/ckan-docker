@@ -32,7 +32,7 @@ spec:
                 - wget
                 - -qO
                 - /dev/null
-                - http://localhost:8983/solr/
+                - solr:8983/solr/
           name: solr
           resources: {}
           volumeMounts:
