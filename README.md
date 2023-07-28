@@ -249,7 +249,15 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
 
 * Log into openshift CLI (`oc login`) and switch to your openshift project.
 
-* If necessary change the `repo` and `branch` values in `combine-yamls.py` in order to define a repository with custom dockerfiles to be used for the buildconfigs.
+* If necessary change the `repo`, `branch` and `openshift_project` values in `combine-yamls.py` in order to define a repository with custom dockerfiles to be used for the buildconfigs.
+
+* If necessary (e.g. for non-public repositories like lhm gitlab), create a ssh-key and include it as a source secret in your openshift project and as a deploy key in your chosen repository. This will enable access to the dockerfiles in the repo which are used during the builds:
+
+  * Create a SSH-Key: `ssh-keygen -C "email_address@example.com"`
+  * Add your generated public key to your repository (in GitLab: Settings/Repository/Deploy Keys)
+  * Create a source secret with a `secret_name` and authentication type `SSH-Key` in your openshift project and include your generated private SSH-Key.
+  * Link the source secret to the builder serviceaccount in your openshift project: `oc secrets link builder secret_name`
+  * Change the `source_cecret` value to `secret_name` (default is `gitlab-source-secret-ckan-ga`) in the combine-yaml.py script.
 
 * Translate the docker-compose files to yaml files for openshift import:
 
