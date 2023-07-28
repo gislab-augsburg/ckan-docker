@@ -6,9 +6,17 @@
 import os
 import shutil
 
-## Insert repo with dockerfiles to be used for buildconfig:
-repo = 'uri: https://github.com/gislab-augsburg/ckan-docker.git'
-branch = 'ref: openshift' 
+## Define repo and branch with dockerfiles used for buildconfigs and source secret used for acces to repo/ host key verification during builds.
+## Define openshift project for adaptation of ckan route:
+repo = 'git@git.muenchen.de:lhm-udp-katalog-2/ckan-docker-ga.git'
+branch = 'openshift'
+source_secret = 'gitlab-source-secret-ckan-ga'
+openshift_project = 'udpkatalog-dev'
+
+# Define lines for insertion of repo, branch and source secret
+repo_line = 'uri: ' + repo
+branch_line = 'ref: ' + branch
+source_secret_lines = 'source:\n    sourceSecret:\n      name: ' + source_secret
 
 # Include .env values and create openshift yamls for build services
 os.system('docker-compose config > docker-compose-resolved.yaml')
@@ -128,7 +136,10 @@ for f in files:
         l = open(path_2 + f,'r')
         lines = l.readlines()
         for line in lines:
-            out_2.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1').replace('ref: main', branch).replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo))
+            out_2.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1')
+            .replace('ref: main', branch_line)
+            .replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo_line)
+            .replace('source:', source_secret_lines))
         l.close()
         out_2.write('\n---\n\n')
 
@@ -160,7 +171,10 @@ for f in files:
             l = open(path_2 + f,'r')
             lines = l.readlines()
             for line in lines:
-                out_2.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1').replace('ref: main', branch).replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo))
+                out_2.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1')
+                .replace('ref: main', branch_line)
+                .replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo_line)
+                .replace('source:', source_secret_lines))
             l.close()
             out_2.write('\n---\n\n')
 
@@ -193,7 +207,10 @@ for f in files:
         l = open(path_3 + f,'r')
         lines = l.readlines()
         for line in lines:
-            out_3.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1').replace('ref: main', branch).replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo))
+            out_3.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1')
+            .replace('ref: main', branch_line)
+            .replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo_line)
+            .replace('source:', source_secret_lines))
         l.close()
         out_3.write('\n---\n\n')
 
@@ -226,7 +243,10 @@ for f in files:
         l = open(path_4 + f,'r')
         lines = l.readlines()
         for line in lines:
-            out_4.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1').replace('ref: main', branch).replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo))
+            out_4.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1')
+            .replace('ref: main', branch_line)
+            .replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo_line)
+            .replace('source:', source_secret_lines))
         l.close()
         out_4.write('\n---\n\n')
 
@@ -251,7 +271,7 @@ for f in files:
         l = open(path_5 + f,'r')
         lines = l.readlines()
         for line in lines:
-            out_3.write(line)
+            out_3.write(line.replace('udpkatalog-dev', openshift_project))
         l.close()
         out_3.write('\n---\n\n')
 

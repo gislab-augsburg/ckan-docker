@@ -15,10 +15,12 @@ spec:
   resources: {}
   runPolicy: Serial
   source:
+    sourceSecret:
+      name: gitlab-source-secret-ckan-ga
     contextDir: ckan/
     git:
       ref: openshift
-      uri: https://github.com/gislab-augsburg/ckan-docker.git
+      uri: git@git.muenchen.de:lhm-udp-katalog-2/ckan-docker-ga.git
     type: ""
   strategy:
     dockerStrategy:
