@@ -228,11 +228,11 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: ckan-route
-  namespace: udpkatalog-dev
+  namespace: udpkatalog-test
   labels:
     io.kompose.service: ckan
 spec:
-  host: ckan-route-udpkatalog-dev.apps.capk.muenchen.de
+  host: ckan-route-udpkatalog-test.apps.capk.muenchen.de
   to:
     kind: Service
     name: ckan
