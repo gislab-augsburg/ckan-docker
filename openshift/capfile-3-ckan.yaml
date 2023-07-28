@@ -76,7 +76,7 @@ spec:
             - name: CKAN_SITE_ID
               value: default
             - name: CKAN_SITE_URL
-              value: http://ckan-route-udpkatalog-dev.apps.capk.muenchen.de
+              value: http://ckan-route-udpkatalog-test.apps.capk.muenchen.de
             - name: CKAN_SMTP_MAIL_FROM
               value: ckan@localhost
             - name: CKAN_SMTP_PASSWORD
