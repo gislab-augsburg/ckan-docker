@@ -7,6 +7,7 @@ import os
 import shutil
 
 ## Define repo and branch with dockerfiles used for buildconfigs and source secret used for acces to repo/ host key verification during builds.
+## If no key verification needed, change source_secret value to ''
 ## Define openshift project for adaptation of ckan route:
 repo = 'git@git.muenchen.de:lhm-udp-katalog-2/ckan-docker-ga.git'
 branch = 'openshift'
@@ -16,7 +17,10 @@ openshift_project = 'udpkatalog-dev'
 # Define lines for insertion of repo, branch and source secret
 repo_line = 'uri: ' + repo
 branch_line = 'ref: ' + branch
-source_secret_lines = 'source:\n    sourceSecret:\n      name: ' + source_secret
+if source_secret != '':
+    source_secret_lines = 'source:\n    sourceSecret:\n      name: ' + source_secret
+else:
+    source_secret_lines = 'source:'
 
 # Include .env values and create openshift yamls for build services
 os.system('docker-compose config > docker-compose-resolved.yaml')
