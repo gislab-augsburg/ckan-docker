@@ -82,7 +82,8 @@ spec:
       restartPolicy: Always
       volumes:
         - name: pg-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: pg-data
   test: false
   triggers:
     - type: ConfigChange
