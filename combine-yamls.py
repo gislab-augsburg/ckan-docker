@@ -12,7 +12,7 @@ import shutil
 repo = 'git@git.muenchen.de:lhm-udp-katalog-2/ckan-docker-ga.git'
 branch = 'openshift'
 source_secret = 'gitlab-source-secret-ckan-ga'
-openshift_project = 'udpkatalog-test'
+openshift_project = 'udpkatalog-dev'
 
 # Define lines for insertion of repo, branch and source secret
 repo_line = 'uri: ' + repo
