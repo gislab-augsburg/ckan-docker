@@ -24,7 +24,7 @@ else:
 
 # Include .env values and create openshift yamls for build services
 os.system('docker-compose config > docker-compose-resolved.yaml')
-os.system('kompose --provider openshift --file docker-compose-resolved.yaml --build build-config convert')
+os.system(f'kompose --provider openshift --file docker-compose-resolved.yaml --build build-config --namespace {openshift_project} convert')
 
 # Create folders
 os.mkdir('openshift')
@@ -33,20 +33,24 @@ os.mkdir('openshift/build/imagestreams')
 os.mkdir('openshift/build/others')
 os.mkdir('openshift/build/ckan')
 os.mkdir('openshift/build/nginx')
+os.mkdir('openshift/build/trash')
 os.mkdir('openshift/nonbuild')
 os.mkdir('openshift/nonbuild/imagestreams')
 os.mkdir('openshift/nonbuild/others')
 os.mkdir('openshift/nonbuild/ckan')
 os.mkdir('openshift/nonbuild/nginx')
+os.mkdir('openshift/nonbuild/trash')
 
 # Sort build services in folders
 path = os.getcwd()
 files = os.listdir(path)
 for f in files:
-    if "buildconfig.yaml" in f or "deploymentconfig.yaml" in f or "imagestream.yaml" in f or "service.yaml" in f or "persistentvolumeclaim.yaml" in f:
+    if "buildconfig.yaml" in f or "deploymentconfig.yaml" in f or "imagestream.yaml" in f or "service.yaml" in f or "persistentvolumeclaim.yaml" in f or "dev-namespace.yaml" in f:
         print(f)
         if "imagestream.yaml" in f:
             shutil.move(path + '/' + f, path + '/openshift/build/imagestreams/' + f )
+        elif "imagestream.yaml" not in f and "dev-namespace.yaml" in f: 
+            shutil.move(path + '/' + f, path + '/openshift/build/trash/' + f )
         elif "imagestream.yaml" not in f and "nginx" not in f and "ckan" not in f: 
             shutil.move(path + '/' + f, path + '/openshift/build/others/' + f )
         elif "imagestream.yaml" not in f and "nginx" in f: 
@@ -55,16 +59,18 @@ for f in files:
             shutil.move(path + '/' + f, path + '/openshift/build/ckan/' + f )
 
 # create openshift yamls for non-build services
-os.system('kompose --provider openshift --file docker-compose-resolved.yaml convert')
+os.system(f'kompose --provider openshift --file docker-compose-resolved.yaml --namespace {openshift_project} convert')
 
 # Sort non-build services in folders
 path = os.getcwd()
 files = os.listdir(path)
 for f in files:
-    if "buildconfig.yaml" in f or "deploymentconfig.yaml" in f or "imagestream.yaml" in f or "service.yaml" in f or "persistentvolumeclaim.yaml" in f:
+    if "buildconfig.yaml" in f or "deploymentconfig.yaml" in f or "imagestream.yaml" in f or "service.yaml" in f or "persistentvolumeclaim.yaml" in f or "dev-namespace.yaml" in f:
         print(f)
         if "imagestream.yaml" in f:
             shutil.move(path + '/' + f, path + '/openshift/nonbuild/imagestreams/' + f )
+        elif "imagestream.yaml" not in f and "dev-namespace.yaml" in f: 
+            shutil.move(path + '/' + f, path + '/openshift/nonbuild/trash/' + f )
         elif "imagestream.yaml" not in f and "nginx" not in f and "ckan" not in f: 
             shutil.move(path + '/' + f, path + '/openshift/nonbuild/others/' + f )
         elif "imagestream.yaml" not in f and "nginx" in f: 
@@ -193,7 +199,9 @@ for f in files:
         lines = l.readlines()
         for line in lines:   
             if 'claimName:' not in line:
-                out_3.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
+                if 'hostPort:' not in line:
+                    if 'protocol: TCP' not in line:
+                        out_3.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
         l.close()
         out_3.write('\n---\n\n')
 
@@ -229,7 +237,9 @@ for f in files:
         lines = l.readlines()
         for line in lines:   
             if 'claimName:' not in line:
-                out_4.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
+                if 'hostPort:' not in line:
+                    if 'protocol: TCP' not in line:
+                        out_4.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
         l.close()
         out_4.write('\n---\n\n')
 

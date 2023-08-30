@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: db
   name: db
+  namespace: udpkatalog-dev
 spec:
   nodeSelector: null
   output:
@@ -45,6 +46,7 @@ metadata:
   labels:
     io.kompose.service: db
   name: db
+  namespace: udpkatalog-dev
 spec:
   replicas: 1
   selector:
@@ -82,8 +84,7 @@ spec:
       restartPolicy: Always
       volumes:
         - name: pg-data
-          persistentVolumeClaim:
-            claimName: pg-data
+          emptyDir: {}
   test: false
   triggers:
     - type: ConfigChange
@@ -112,6 +113,7 @@ metadata:
   labels:
     io.kompose.service: datapusher
   name: datapusher
+  namespace: udpkatalog-dev
 spec:
   replicas: 1
   selector:
@@ -165,6 +167,7 @@ metadata:
   labels:
     io.kompose.service: redis
   name: redis
+  namespace: udpkatalog-dev
 spec:
   replicas: 1
   selector:
@@ -217,6 +220,7 @@ metadata:
   labels:
     io.kompose.service: solr
   name: solr
+  namespace: udpkatalog-dev
 spec:
   replicas: 1
   selector:

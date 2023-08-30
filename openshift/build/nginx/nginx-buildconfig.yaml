@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: nginx
   name: nginx
+  namespace: udpkatalog-dev
 spec:
   nodeSelector: null
   output:

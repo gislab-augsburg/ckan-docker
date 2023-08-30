@@ -1,10 +1,11 @@
-apiVersion: v1
+apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: db
   name: db
+  namespace: udpkatalog-dev
 spec:
   replicas: 1
   selector:

@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: ckan
   name: ckan
+  namespace: udpkatalog-dev
 spec:
   nodeSelector: null
   output:
@@ -43,6 +44,7 @@ metadata:
   labels:
     io.kompose.service: ckan
   name: ckan
+  namespace: udpkatalog-dev
 spec:
   replicas: 1
   selector:
@@ -212,6 +214,7 @@ metadata:
   labels:
     io.kompose.service: ckan
   name: ckan
+  namespace: udpkatalog-dev
 spec:
   ports:
     - name: "5000"

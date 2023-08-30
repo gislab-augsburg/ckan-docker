@@ -10,10 +10,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+        required: true
       redis:
         condition: service_healthy
+        required: true
       solr:
         condition: service_healthy
+        required: true
     environment:
       CKAN___API_TOKEN__JWT__DECODE__SECRET: string:CHANGE_ME
       CKAN___API_TOKEN__JWT__ENCODE__SECRET: string:CHANGE_ME
@@ -132,6 +135,7 @@ services:
     depends_on:
       ckan:
         condition: service_healthy
+        required: true
     networks:
       default: null
     ports:

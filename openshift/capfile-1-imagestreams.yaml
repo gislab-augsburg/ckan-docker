@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: ckan
   name: ckan
+  namespace: udpkatalog-dev
 spec:
   lookupPolicy:
     local: false
@@ -30,6 +31,7 @@ metadata:
   labels:
     io.kompose.service: db
   name: db
+  namespace: udpkatalog-dev
 spec:
   lookupPolicy:
     local: false
@@ -55,6 +57,7 @@ metadata:
   labels:
     io.kompose.service: nginx
   name: nginx
+  namespace: udpkatalog-dev
 spec:
   lookupPolicy:
     local: false
@@ -80,6 +83,7 @@ metadata:
   labels:
     io.kompose.service: datapusher
   name: datapusher
+  namespace: udpkatalog-dev
 spec:
   lookupPolicy:
     local: false
@@ -105,6 +109,7 @@ metadata:
   labels:
     io.kompose.service: redis
   name: redis
+  namespace: udpkatalog-dev
 spec:
   lookupPolicy:
     local: false
@@ -130,6 +135,7 @@ metadata:
   labels:
     io.kompose.service: solr
   name: solr
+  namespace: udpkatalog-dev
 spec:
   lookupPolicy:
     local: false

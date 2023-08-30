@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: solr-data
   name: solr-data
+  namespace: udpkatalog-dev
 spec:
   accessModes:
     - ReadWriteOnce

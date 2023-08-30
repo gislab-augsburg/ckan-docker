@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: pg-data
   name: pg-data
+  namespace: udpkatalog-dev
 spec:
   accessModes:
     - ReadWriteOnce
