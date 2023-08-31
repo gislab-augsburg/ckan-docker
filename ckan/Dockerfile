@@ -75,6 +75,7 @@ COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
 RUN chmod 777 /srv/app/start_ckan.sh
 
 COPY setup/prerun_2.py.override /srv/app/prerun.py
+RUN chmod 777 /srv/app/prerun.py
 
 RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolation=None)|g" /srv/app/src/ckan/ckan/cli/__init__.py
 
