@@ -200,13 +200,17 @@ if __name__ == "__main__":
     maintenance = os.environ.get("MAINTENANCE_MODE", "").lower() == "true"
 
     if maintenance:
-        print("[prerun] Maintenance mode, skipping setup...")
-    else:
+        print("[prerun] Maintenance mode, skipping db and sysadmin setup...")
         check_main_db_connection()
-        #init_db()
         update_plugins()
         check_datastore_db_connection()
-        #init_datastore_db()
+        check_solr_connection()
+    else:
+        check_main_db_connection()
+        init_db()
+        update_plugins()
+        check_datastore_db_connection()
+        init_datastore_db()
         check_solr_connection()
         create_sysadmin()
         
