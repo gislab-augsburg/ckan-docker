@@ -195,17 +195,39 @@ def create_sysadmin():
         print("[prerun] Made user {0} a sysadmin".format(name))
 
 
+def update_envvars():
+
+    print("[prerun] Update environment variables")
+
+    pg_user = os.environ.get("POSTGRES_USER", "")
+    pg_pwd = os.environ.get("POSTGRES_PASSWORD", "")
+    ds_user = os.environ.get("DATASTORE_READONLY_USER", "")
+    ds_pwd = os.environ.get("DATASTORE_READONLY_PASSWORD", "")
+    pg_host = os.environ.get("POSTGRES_HOST", "")
+    
+    os.environ["CKAN_SQLALCHEMY_URL"] = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/ckan?sslmode=disable"
+    os.environ["CKAN_DATASTORE_WRITE_URL"] = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/datastore?sslmode=disable"
+    os.environ["CKAN_DATASTORE_READ_URL"] = f"postgresql://{ds_user}:{ds_pwd}@{pg_host}/datastore?sslmode=disable"
+    os.environ["TEST_CKAN_SQLALCHEMY_URL"] = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/ckan_test?sslmode=disable"
+    os.environ["TEST_CKAN_DATASTORE_WRITE_URL"] = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/datastore_test?sslmode=disable"
+    os.environ["TEST_CKAN_DATASTORE_READ_URL"] = f"postgresql://{ds_user}:{ds_pwd}@{pg_host}/datastore_test?sslmode=disable"
+
+    print(os.environ.get("CKAN_SQLALCHEMY_URL"))
+  
+
 if __name__ == "__main__":
 
     maintenance = os.environ.get("MAINTENANCE_MODE", "").lower() == "true"
 
     if maintenance:
         print("[prerun] Maintenance mode, skipping db and sysadmin setup...")
+        update_envvars()
         check_main_db_connection()
         update_plugins()
         check_datastore_db_connection()
         check_solr_connection()
     else:
+        update_envvars()
         check_main_db_connection()
         init_db()
         update_plugins()

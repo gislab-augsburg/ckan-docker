@@ -22,6 +22,20 @@ if source_secret != '':
 else:
     source_secret_lines = 'source:'
 
+# Get .env values as dict
+env_vars = {}
+with open('.env') as f:
+    for line in f:
+        if line.startswith('#') or not line.strip():
+            continue
+        # if 'export' not in line:
+        #     continue
+        key, value = line.strip().split('=', 1)
+        # os.environ[key] = value  # Load to local environ
+        env_vars[key] = value
+
+#print(env_vars['POSTGRES_USER'])
+
 # Include .env values and create openshift yamls for build services
 os.system('docker-compose config > docker-compose-resolved.yaml')
 os.system(f'kompose --provider openshift --file docker-compose-resolved.yaml --build build-config --namespace {openshift_project} convert')
@@ -188,6 +202,7 @@ for f in files:
             l.close()
             out_2.write('\n---\n\n')
 
+switch = 0
 
 path_3 = path + '/openshift/build/ckan/'
 files = os.listdir(path_3)
@@ -201,7 +216,39 @@ for f in files:
             if 'claimName:' not in line:
                 if 'hostPort:' not in line:
                     if 'protocol: TCP' not in line:
-                        out_3.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
+
+                        if '- name: POSTGRES_USER' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'postgres-user'
+
+                        elif '- name: POSTGRES_PASSWORD' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'postgres-password'
+
+                        elif '- name: DATASTORE_READONLY_USER' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'datastore-readonly-user'
+
+                        elif '- name: DATASTORE_READONLY_PASSWORD' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'datastore-readonly-password'
+
+                        elif '- name: POSTGRES_HOST' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'postgres-host'
+
+                        if switch == 1 and 'value:' in line:                          
+                            secret_lines = f'              valueFrom:\n                secretKeyRef:\n                  name: {secret_name}\n                  key: {secret_key}\n'
+                            out_3.write(secret_lines)
+                            switch = 0
+
+                        else:
+                            out_3.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
         l.close()
         out_3.write('\n---\n\n')
 
@@ -271,7 +318,7 @@ path_5 = path + '/openshift-add/'
 
 files = os.listdir(path_5)
 for f in files:
-    if "ckan" not in f:
+    if "ckan" not in f and "db-secret" not in f:
         #print(f)
         l = open(path_5 + f,'r')
         lines = l.readlines()
@@ -279,6 +326,19 @@ for f in files:
             out_2.write(line)
         l.close()
         out_2.write('\n---\n\n')
+    
+    elif "db-secret" in f:
+        l = open(path_5 + f,'r')
+        lines = l.readlines()
+        for line in lines:
+            out_2.write(line.replace('POSTGRES_USER', env_vars['POSTGRES_USER'])\
+                .replace('POSTGRES_PASSWORD', env_vars['POSTGRES_PASSWORD'])\
+                .replace('DATASTORE_READONLY_USER', env_vars['DATASTORE_READONLY_USER'])\
+                .replace('DATASTORE_READONLY_PASSWORD', env_vars['DATASTORE_READONLY_PASSWORD'])\
+                .replace('POSTGRES_HOST', env_vars['POSTGRES_HOST']))
+        l.close()
+        out_2.write('\n---\n\n')
+
 
     elif "ckan" in f:
         #print(f)
