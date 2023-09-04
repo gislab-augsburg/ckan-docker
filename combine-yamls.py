@@ -34,6 +34,21 @@ with open('.env') as f:
         # os.environ[key] = value  # Load to local environ
         env_vars[key] = value
 
+# Construct secondary secret environment variables
+pg_user = envars["POSTGRES_USER", ""]
+pg_pwd = envars["POSTGRES_PASSWORD", ""]
+ds_user = envars["DATASTORE_READONLY_USER", ""]
+ds_pwd = envars["DATASTORE_READONLY_PASSWORD", ""]
+pg_host = envars["POSTGRES_HOST", ""]
+    
+ckan_sqla_url = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/ckan?sslmode=disable"
+ckan_ds_write_url = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/datastore?sslmode=disable"
+ckan_ds_read_url = f"postgresql://{ds_user}:{ds_pwd}@{pg_host}/datastore?sslmode=disable"
+test_ckan_sqla_url = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/ckan_test?sslmode=disable"
+test_ckan_ds_write_url = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/datastore_test?sslmode=disable"
+test_ckan_ds_read_url = f"postgresql://{ds_user}:{ds_pwd}@{pg_host}/datastore_test?sslmode=disable"
+
+
 #print(env_vars['POSTGRES_USER'])
 
 # Include .env values and create openshift yamls for build services
@@ -241,6 +256,37 @@ for f in files:
                             switch = 1
                             secret_name = 'db-secret'
                             secret_key = 'postgres-host'
+                        
+                        elif '- name: CKAN_SQLALCHEMY_URL' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'ckan-sqlalchemy-url'
+                        
+                        elif '- name: CKAN_DATASTORE_WRITE_URL' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'ckan-datastore-write-url'
+                        
+                        elif '- name: CKAN_DATASTORE_READ_URL' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'ckan-datastore-read-url'
+                        
+                        elif '- name: TEST_CKAN_SQLALCHEMY_URL' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'test-ckan-sqlalchemy-url'
+                        
+                        elif '- name: TEST_CKAN_DATASTORE_WRITE_URL' in line:
+                            switch = 1
+                            secret_name = 'db-secret'
+                            secret_key = 'test-ckan-datastore-write-url'
+                        
+                        elif '- name: TEST_CKAN_DATASTORE_READ_URL' in line:
+                            switch = 1
+                            secret_name = 'test-ckan-datastore-read-url'
+                            secret_key = 'postgres-host'
+
 
                         if switch == 1 and 'value:' in line:                          
                             secret_lines = f'              valueFrom:\n                secretKeyRef:\n                  name: {secret_name}\n                  key: {secret_key}\n'
@@ -335,7 +381,14 @@ for f in files:
                 .replace('POSTGRES_PASSWORD', env_vars['POSTGRES_PASSWORD'])\
                 .replace('DATASTORE_READONLY_USER', env_vars['DATASTORE_READONLY_USER'])\
                 .replace('DATASTORE_READONLY_PASSWORD', env_vars['DATASTORE_READONLY_PASSWORD'])\
-                .replace('POSTGRES_HOST', env_vars['POSTGRES_HOST']))
+                .replace('POSTGRES_HOST', env_vars['POSTGRES_HOST'])\
+                .replace('CKAN_SQLALCHEMY_URL', ckan_sqla_url)\
+                .replace('CKAN_DATASTORE_WRITE_URL', ckan_ds_write_url)\
+                .replace('CKAN_DATASTORE_READ_URL', ckan_ds_read_url)\
+                .replace('TEST_CKAN_SQLALCHEMY_URL', test_ckan_sqla_url)\
+                .replace('TEST_CKAN_DATASTORE_WRITE_URL', test_ckan_ds_write_url)\
+                .replace('TEST_CKAN_DATASTORE_READ_URL', test_ckan_ds_read_url))
+
         l.close()
         out_2.write('\n---\n\n')
 
