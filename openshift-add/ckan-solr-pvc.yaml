@@ -3,13 +3,13 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: ckan-storage
-  name: ckan-storage
+    io.kompose.service: ckan-solr-pvc
+  name: ckan-solr-pvc
   namespace: udpkatalog-dev
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
+      storage: 50Gi
 status: {}

@@ -5,6 +5,7 @@
 
 import os
 import shutil
+import time
 
 ## Define repo and branch with dockerfiles used for buildconfigs and source secret used for acces to repo/ host key verification during builds.
 ## If no key verification needed, change source_secret value to ''
@@ -191,8 +192,7 @@ for f in files:
             l = open(path_2 + f,'r')
             lines = l.readlines()
             for line in lines:   
-                if 'claimName:' not in line:
-                    out_2.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
+                out_2.write(line.replace('claimName: solr-data','claimName: ckan-solr-pvc').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
             l.close()
             out_2.write('\n---\n\n')
 
@@ -228,73 +228,72 @@ for f in files:
         l = open(path_3 + f,'r')
         lines = l.readlines()
         for line in lines:   
-            if 'claimName:' not in line:
-                if 'hostPort:' not in line:
-                    if 'protocol: TCP' not in line:
+            if 'hostPort:' not in line:
+                if 'protocol: TCP' not in line:
 
-                        if '- name: POSTGRES_USER' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'postgres-user'
+                    if '- name: POSTGRES_USER' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'postgres-user'
 
-                        elif '- name: POSTGRES_PASSWORD' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'postgres-password'
+                    elif '- name: POSTGRES_PASSWORD' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'postgres-password'
 
-                        elif '- name: DATASTORE_READONLY_USER' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'datastore-readonly-user'
+                    elif '- name: DATASTORE_READONLY_USER' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'datastore-readonly-user'
 
-                        elif '- name: DATASTORE_READONLY_PASSWORD' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'datastore-readonly-password'
+                    elif '- name: DATASTORE_READONLY_PASSWORD' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'datastore-readonly-password'
 
-                        elif '- name: POSTGRES_HOST' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'postgres-host'
-                        
-                        elif '- name: CKAN_SQLALCHEMY_URL' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'ckan-sqlalchemy-url'
-                        
-                        elif '- name: CKAN_DATASTORE_WRITE_URL' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'ckan-datastore-write-url'
-                        
-                        elif '- name: CKAN_DATASTORE_READ_URL' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'ckan-datastore-read-url'
-                        
-                        elif '- name: TEST_CKAN_SQLALCHEMY_URL' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'test-ckan-sqlalchemy-url'
-                        
-                        elif '- name: TEST_CKAN_DATASTORE_WRITE_URL' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'test-ckan-datastore-write-url'
-                        
-                        elif '- name: TEST_CKAN_DATASTORE_READ_URL' in line:
-                            switch = 1
-                            secret_name = 'db-secret'
-                            secret_key = 'test-ckan-datastore-read-url'
+                    elif '- name: POSTGRES_HOST' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'postgres-host'
+                    
+                    elif '- name: CKAN_SQLALCHEMY_URL' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'ckan-sqlalchemy-url'
+                    
+                    elif '- name: CKAN_DATASTORE_WRITE_URL' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'ckan-datastore-write-url'
+                    
+                    elif '- name: CKAN_DATASTORE_READ_URL' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'ckan-datastore-read-url'
+                    
+                    elif '- name: TEST_CKAN_SQLALCHEMY_URL' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'test-ckan-sqlalchemy-url'
+                    
+                    elif '- name: TEST_CKAN_DATASTORE_WRITE_URL' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'test-ckan-datastore-write-url'
+                    
+                    elif '- name: TEST_CKAN_DATASTORE_READ_URL' in line:
+                        switch = 1
+                        secret_name = 'db-secret'
+                        secret_key = 'test-ckan-datastore-read-url'
 
 
-                        if switch == 1 and 'value:' in line:                          
-                            secret_lines = f'              valueFrom:\n                secretKeyRef:\n                  name: {secret_name}\n                  key: {secret_key}\n'
-                            out_3.write(secret_lines)
-                            switch = 0
+                    if switch == 1 and 'value:' in line:                          
+                        secret_lines = f'              valueFrom:\n                secretKeyRef:\n                  name: {secret_name}\n                  key: {secret_key}\n'
+                        out_3.write(secret_lines)
+                        switch = 0
 
-                        else:
-                            out_3.write(line.replace('persistentVolumeClaim:','emptyDir: {}').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
+                    else:
+                        out_3.write(line.replace('claimName: ckan-storage','claimName: ckan-solr-pvc').replace('apiVersion: v1','apiVersion: apps.openshift.io/v1'))
         l.close()
         out_3.write('\n---\n\n')
 
@@ -364,12 +363,12 @@ path_5 = path + '/openshift-add/'
 
 files = os.listdir(path_5)
 for f in files:
-    if "ckan" not in f and "db-secret" not in f:
+    if "ckan-route" not in f and "db-secret" not in f:
         #print(f)
         l = open(path_5 + f,'r')
         lines = l.readlines()
         for line in lines:
-            out_2.write(line)
+            out_2.write(line.replace('udpkatalog-dev', openshift_project))
         l.close()
         out_2.write('\n---\n\n')
     
@@ -392,8 +391,7 @@ for f in files:
         l.close()
         out_2.write('\n---\n\n')
 
-
-    elif "ckan" in f:
+    elif "ckan-route" in f:
         #print(f)
         l = open(path_5 + f,'r')
         lines = l.readlines()
@@ -408,5 +406,28 @@ out_3.close()
 out_4.close()
 
 
+# Import the created  yaml files to openshift (CAP)
+# Needs oc to be installed
+# Make sure to be logged into openshift CLI and right project, check with "oc projects"
 
-    
+outfile_1 = 'openshift/capfile-1-imagestreams.yaml'
+outfile_2 = 'openshift/capfile-2-others.yaml'
+outfile_3 = 'openshift/capfile-3-ckan.yaml'
+outfile_4 = 'openshift/capfile-4-nginx.yaml'
+
+print('Import to Openshift part 1')
+
+os.system('oc create -f ' + outfile_1)
+os.system('oc create -f ' + outfile_2)
+
+time.sleep(10)
+
+print('Import to Openshift part 2')
+
+os.system('oc create -f ' + outfile_3)
+os.system('oc create -f ' + outfile_4)
+
+os.remove('docker-compose-resolved.yaml')
+shutil.rmtree('openshift')
+
+print('Ready. Builds and Deploys starting in CAP.')
