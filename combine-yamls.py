@@ -35,11 +35,11 @@ with open('.env') as f:
         env_vars[key] = value
 
 # Construct secondary secret environment variables
-pg_user = envars["POSTGRES_USER", ""]
-pg_pwd = envars["POSTGRES_PASSWORD", ""]
-ds_user = envars["DATASTORE_READONLY_USER", ""]
-ds_pwd = envars["DATASTORE_READONLY_PASSWORD", ""]
-pg_host = envars["POSTGRES_HOST", ""]
+pg_user = env_vars["POSTGRES_USER"]
+pg_pwd = env_vars["POSTGRES_PASSWORD"]
+ds_user = env_vars["DATASTORE_READONLY_USER"]
+ds_pwd = env_vars["DATASTORE_READONLY_PASSWORD"]
+pg_host = env_vars["POSTGRES_HOST"]
     
 ckan_sqla_url = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/ckan?sslmode=disable"
 ckan_ds_write_url = f"postgresql://{pg_user}:{pg_pwd}@{pg_host}/datastore?sslmode=disable"
