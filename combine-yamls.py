@@ -284,8 +284,8 @@ for f in files:
                         
                         elif '- name: TEST_CKAN_DATASTORE_READ_URL' in line:
                             switch = 1
-                            secret_name = 'test-ckan-datastore-read-url'
-                            secret_key = 'postgres-host'
+                            secret_name = 'db-secret'
+                            secret_key = 'test-ckan-datastore-read-url'
 
 
                         if switch == 1 and 'value:' in line:                          
