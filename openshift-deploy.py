@@ -420,7 +420,8 @@ print('Import to Openshift part 1')
 os.system('oc create -f ' + outfile_1)
 os.system('oc create -f ' + outfile_2)
 
-time.sleep(10)
+print('Builds and Deploys part 1 starting in CAP, waiting 60 seconds ... ')
+time.sleep(60)
 
 print('Import to Openshift part 2')
 
@@ -430,4 +431,4 @@ os.system('oc create -f ' + outfile_4)
 os.remove('docker-compose-resolved.yaml')
 shutil.rmtree('openshift')
 
-print('Ready. Builds and Deploys starting in CAP.')
+print('Ready, Builds and Deploys part 2 starting in CAP.')
