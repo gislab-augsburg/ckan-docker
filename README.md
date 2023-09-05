@@ -247,12 +247,12 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
 
 * Set up and configure PostgreSQL (or order it at LHM IT-Service) for ckan and datastore, see also https://docs.ckan.org/en/2.10/maintaining/installing/install-from-source.html and https://docs.ckan.org/en/2.10/maintaining/datastore.html:
  
-  * Create main user `ckan` (POSTGRES_USER): `sudo -u postgres createuser -S -D -R -P ckan`
-  * Create database `ckan`, owned by main user `ckan`: `sudo -u postgres createdb -O ckan ckan -E utf-8`
-  * Create readonly user `datastore-ro` (DATASTORE_READONLY_USER): `sudo -u postgres createuser -S -D -R -P -l datastore_ro`
-  * Create database `datastore`, owned by main user `ckan` : `sudo -u postgres createdb -O ckan datastore -E utf-8`
-  * Adapt `postgresql.conf` and `pg_hba.conf` to allow connections from CKAN Pod to PostgreSQL Server (At LHM IT Service, order unlocking e.g. CAP-K-Net or CAP-C-Net)
-  * Set permissions for readonly user `datastore-ro` according to https://docs.ckan.org/en/2.10/maintaining/datastore.html or with the script `datastore_permissions.sql`
+  * Create main user ckan (POSTGRES_USER): `sudo -u postgres createuser -S -D -R -P ckan`
+  * Create database ckan, owned by main user ckan: `sudo -u postgres createdb -O ckan ckan -E utf-8`
+  * Create readonly user datastore_ro (DATASTORE_READONLY_USER): `sudo -u postgres createuser -S -D -R -P -l datastore_ro`
+  * Create database datastore, owned by main user ckan: `sudo -u postgres createdb -O ckan datastore -E utf-8`
+  * Adapt `postgresql.conf` and `pg_hba.conf` to allow connections from CKAN Pod to PostgreSQL Server (At LHM IT Service, order unlocking of e.g. CAP-K-Net or CAP-C-Net)
+  * Set permissions for readonly user datastore-ro according to https://docs.ckan.org/en/2.10/maintaining/datastore.html or with the script `datastore_permissions.sql`
 
 * Log into openshift CLI (`oc login`) and switch to your openshift project.
 
@@ -264,9 +264,12 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
   * Add your generated public key to your repository (in GitLab: Settings/Repository/Deploy Keys)
   * Create a source secret with a `secret_name` and authentication type `SSH-Key` in your openshift project and include your generated private SSH-Key.
   * Link the source secret to the builder serviceaccount in your openshift project: `oc secrets link builder secret_name`
-  * Change the `source_cecret` value to `secret_name` (default is `gitlab-source-secret-ckan-ga`) in the combine-yaml.py script.
+  * Change the `source_cecret` value to `secret_name` (default is `gitlab-source-secret-ckan-ga`) in the openshift-deploy.py script.
 
-* Edit your .env file: At least check `POSTGRES_USER` and `DATASTORE_READONLY_USER` and replace the values for  `POSTGRES_HOST`, `POSTGRES_PASSWORD` and `DATASTORE_READONLY_PASSWORD`. The URLs for `# CKAN databases` and `# Test database connections` will be created automatically.
+* Edit your .env file:
+  * Check `POSTGRES_USER` and `DATASTORE_READONLY_USER`
+  * Replace the values for  `POSTGRES_HOST`, `POSTGRES_PASSWORD` and `DATASTORE_READONLY_PASSWORD`
+  * The URLs for `# CKAN databases` and `# Test database connections` will be created automatically.
 
 * Make sure you have docker-compose, kompose and oc installed.
 
