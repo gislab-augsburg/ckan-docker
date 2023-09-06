@@ -82,6 +82,11 @@ RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolat
 RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not self._read_connection_has_correct_privileges():|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 
+RUN pip3 install -e 'git+https://git.muenchen.de/lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+
+
 
 
 
