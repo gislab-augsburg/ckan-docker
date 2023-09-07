@@ -254,6 +254,10 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
   * Adapt `postgresql.conf` and `pg_hba.conf` to allow connections from CKAN Pod to PostgreSQL Server (At LHM IT Service, order unlocking of e.g. CAP-K-Net or CAP-C-Net)
   * Set permissions for readonly user datastore-ro according to https://docs.ckan.org/en/2.10/maintaining/datastore.html or with the script `datastore_permissions.sql`
 
+* Make sure you have docker-compose, kompose and oc installed.
+
+* Log into openshift CLI (`oc login`) and switch to your openshift project.
+
 * If necessary change the `repo`, `branch` and `openshift_project` values in `openshift-deploy.py` in order to define a repository with custom dockerfiles to be used for the buildconfigs.
 
 * If necessary (e.g. for non-public repositories like lhm gitlab), create a ssh-key and include it as a source secret in your openshift project and as a deploy key in your chosen repository. This will enable access to the dockerfiles in the repo which are used during the builds:
@@ -270,10 +274,6 @@ This is about how to install CKAN and its dependencies on LHM OpenShift Containe
   * The URLs for `# CKAN databases` and `# Test database connections` will be created automatically.
   * Set `MAINTENANCE_MODE` to `True` if you have already data on the PostgreSQL and want to preserve them. If `False`, the PostgreSQL tables will be deleted and newly set up. Use `False` for initial installation.
   * Check the other environment variables and adapt them if necessary.
-
-* Make sure you have docker-compose, kompose and oc installed.
-
-* Log into openshift CLI (`oc login`) and switch to your openshift project.
 
 * Translate the docker-compose files to yaml files and deploy them to Openshift CAP with:
 
