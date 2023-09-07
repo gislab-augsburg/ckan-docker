@@ -87,7 +87,6 @@ RUN apk add --no-cache openssh
 RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
-git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git
 
 
 
