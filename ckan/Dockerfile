@@ -61,7 +61,7 @@ COPY setup/.gitconfig /root/.gitconfig
 RUN mkdir /root/.ssh
 COPY setup/ssh_config /root/.ssh/config
 RUN echo -e ${CKANEXT_HARVEST_SECRET} > /root/.ssh/id_rsa
-RUN chmod 400 /root/.ssh/id_rsa
+
 
 ## Allow all but /proc and /sys
 
@@ -94,6 +94,14 @@ RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not sel
 RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 
 RUN apk add --no-cache openssh
+
+RUN cd /root/.ssh
+RUN ls -l -a
+
+
+
+RUN chmod 600 /root/.ssh
+RUN chmod 400 /root/.ssh/id_rsa
 
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
 RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
