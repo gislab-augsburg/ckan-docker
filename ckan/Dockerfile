@@ -95,13 +95,12 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 
 RUN apk add --no-cache openssh
 
-RUN cd /root/.ssh
-RUN ls -l -a
-
-
-
-RUN chmod 600 /root/.ssh
+RUN chmod -R 600 /root/.ssh
+RUN chmod 700 /root/.ssh
 RUN chmod 400 /root/.ssh/id_rsa
+#RUN chmod 777 /root/.ssh/config
+
+RUN ls -l -a /root/.ssh
 
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
 RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
