@@ -1,9 +1,6 @@
 FROM ckan/ckan-base:2.10.0
 #FROM ckan/ckan-base:2.9.9
 
-RUN echo ${HOME}
-RUN whoami
-
 # Set up environment variables
 ENV APP_DIR=/srv/app
 ENV TZ=UTC
@@ -58,14 +55,13 @@ COPY setup/passwd /etc/passwd
 RUN chmod 777 /etc/passwd
 
 # Gitconfig
-COPY setup/.gitconfig /home/arbi/.gitconfig
-RUN chmod 777 /home/arbi/.gitconfig
+COPY setup/.gitconfig /root/.gitconfig
 
 # SSH Config
-RUN mkdir /home/arbi/.ssh
-COPY setup/ssh_config /home/arbi/.ssh/config
-RUN echo -e ${CKANEXT_HARVEST_SECRET} > /home/arbi/.ssh/id_rsa
-RUN chmod 400 /home/arbi/.ssh/id_rsa
+RUN mkdir /root/.ssh
+COPY setup/ssh_config /root/.ssh/config
+RUN echo -e ${CKANEXT_HARVEST_SECRET} > /root/.ssh/id_rsa
+RUN chmod 400 /root/.ssh/id_rsa
 
 ## Allow all but /proc and /sys
 
@@ -99,13 +95,13 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 
 RUN apk add --no-cache openssh
 
-#RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
-#RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
-#RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
-RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
-    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+#RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
+    #pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
 
