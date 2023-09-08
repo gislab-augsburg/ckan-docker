@@ -63,6 +63,36 @@ COPY setup/ssh_config /root/.ssh/config
 RUN echo -e ${CKANEXT_HARVEST_SECRET} > /root/.ssh/id_rsa
 
 
+
+
+COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
+RUN chmod 777 /srv/app/start_ckan.sh
+
+COPY setup/prerun_2.py.override /srv/app/prerun.py
+RUN chmod 777 /srv/app/prerun.py
+
+RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolation=None)|g" /srv/app/src/ckan/ckan/cli/__init__.py
+
+RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not self._read_connection_has_correct_privileges():|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
+RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
+
+RUN apk add --no-cache openssh
+
+RUN chmod -R 700 /root/.ssh
+RUN chmod 700 /root/.ssh
+RUN chmod 400 /root/.ssh/id_rsa
+#RUN chmod 777 /root/.ssh/config
+
+RUN ls -l -a /root/.ssh
+
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+
+#RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
+    #pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
 ## Allow all but /proc and /sys
 
 RUN chmod -R 777 /bin
@@ -81,34 +111,6 @@ RUN chmod -R 777 /srv
 RUN chmod -R 777 /tmp
 RUN chmod -R 777 /usr
 RUN chmod -R 777 /var
-
-COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
-RUN chmod 777 /srv/app/start_ckan.sh
-
-COPY setup/prerun_2.py.override /srv/app/prerun.py
-RUN chmod 777 /srv/app/prerun.py
-
-RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolation=None)|g" /srv/app/src/ckan/ckan/cli/__init__.py
-
-RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not self._read_connection_has_correct_privileges():|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
-RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
-
-RUN apk add --no-cache openssh
-
-RUN chmod -R 600 /root/.ssh
-RUN chmod 700 /root/.ssh
-RUN chmod 400 /root/.ssh/id_rsa
-#RUN chmod 777 /root/.ssh/config
-
-RUN ls -l -a /root/.ssh
-
-RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
-RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
-RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
-
-
-#RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
-    #pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
 
