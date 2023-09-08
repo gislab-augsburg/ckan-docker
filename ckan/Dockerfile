@@ -44,8 +44,7 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 
 #RUN chmod -R 777 /
 
-#Create user to arbitrary openshift uid/ gid:
-
+# Create user to arbitrary openshift uid/ gid:
 #RUN addgroup -g 1002890000 arbigroup
 #RUN adduser --uid 1002890000 arbi arbigroup
 RUN chmod -R 777 /etc
@@ -54,8 +53,16 @@ RUN mkdir /home/arbi
 RUN chmod -R 777 /home/arbi
 COPY setup/passwd /etc/passwd
 RUN chmod 777 /etc/passwd
+
+# Gitconfig
 COPY setup/.gitconfig /home/arbi/.gitconfig
 RUN chmod 777 /home/arbi/.gitconfig
+
+# SSH Config
+RUN mkdir /home/arbi/.ssh
+COPY setup/ssh_config /home/arbi/.ssh/config
+RUN echo -e ${CKANEXT_HARVEST_SECRET} > /home/arbi/.ssh/id_rsa
+RUN chmod 400 /home/arbi/.ssh/id_rsa
 
 ## Allow all but /proc and /sys
 
@@ -89,6 +96,9 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 
 RUN apk add --no-cache openssh
 
+git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+pip3 install -e ${APP_DIR}/src/ckanext-harvest
+pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
 #RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
