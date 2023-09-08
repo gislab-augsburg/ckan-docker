@@ -96,9 +96,9 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 
 RUN apk add --no-cache openssh
 
-git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
-pip3 install -e ${APP_DIR}/src/ckanext-harvest
-pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
 #RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
