@@ -49,8 +49,13 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 #RUN addgroup -g 1002890000 arbigroup
 #RUN adduser --uid 1002890000 arbi arbigroup
 RUN chmod -R 777 /etc
+RUN chmod -R 777 /home
+RUN mkdir /home/arbi
+RUN chmod -R 777 /home/arbi
 COPY setup/passwd /etc/passwd
 RUN chmod 777 /etc/passwd
+COPY setup/.gitconfig /home/arbi/.gitconfig
+RUN chmod 777 /home/arbi/.gitconfig
 
 ## Allow all but /proc and /sys
 
@@ -58,7 +63,7 @@ RUN chmod -R 777 /bin
 RUN chmod -R 777 /dev 
 RUN chmod -R 777 /docker-entrypoint.d
 #RUN chmod -R 777 /etc
-RUN chmod -R 777 /home 
+#RUN chmod -R 777 /home 
 RUN chmod -R 777 /lib 
 RUN chmod -R 777 /media
 RUN chmod -R 777 /mnt
@@ -83,6 +88,8 @@ RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not sel
 RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 
 RUN apk add --no-cache openssh
+
+
 
 #RUN pip3 install -e 'git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest' && \
 #    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt

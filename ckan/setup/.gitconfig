@@ -1,0 +1,6 @@
+[core]
+autocrlf = false
+
+
+[http]
+sslVerify=false
