@@ -86,9 +86,13 @@ RUN ls -l -a /root/.ssh
 RUN cat /root/.ssh/id_rsa
 RUN cat /root/.ssh/config
 
+RUN eval `ssh-agent`
+RUN ssh-add /root/.ssh/id_rsa
+
 #RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
 #RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
-RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest 
+RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest
+RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest
 RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
