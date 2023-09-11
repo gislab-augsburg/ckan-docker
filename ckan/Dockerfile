@@ -74,20 +74,21 @@ RUN apk add --no-cache openssh
 RUN mkdir /root/.ssh
 COPY setup/ssh_config /root/.ssh/config
 RUN echo -e ${CKANEXT_SECRET} > /root/.ssh/id_rsa
-#COPY setup/known_hosts /root/.ssh/known_hosts
+COPY setup/known_hosts /root/.ssh/known_hosts
 
 RUN chmod -R 755 /root/.ssh
 RUN chmod 700 /root/.ssh
 RUN chmod 400 /root/.ssh/id_rsa
 #RUN chmod 777 /root/.ssh/config
+RUN chmod 600 /root/.ssh/known_hosts
 
 RUN ls -l -a /root/.ssh
 
 RUN cat /root/.ssh/id_rsa
 RUN cat /root/.ssh/config
 
-RUN eval `ssh-agent`
-RUN ssh-add /root/.ssh/id_rsa
+#RUN eval `ssh-agent`
+#RUN ssh-add /root/.ssh/id_rsa
 
 #RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
 #RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
