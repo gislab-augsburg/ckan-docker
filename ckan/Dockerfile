@@ -57,14 +57,6 @@ RUN chmod 777 /etc/passwd
 # Gitconfig
 COPY setup/.gitconfig /root/.gitconfig
 
-# SSH Config
-RUN mkdir /root/.ssh
-COPY setup/ssh_config /root/.ssh/config
-RUN echo -e ${CKANEXT_HARVEST_SECRET} > /root/.ssh/id_rsa
-
-
-
-
 COPY setup/start_ckan_2.sh.override /srv/app/start_ckan.sh
 RUN chmod 777 /srv/app/start_ckan.sh
 
@@ -78,15 +70,25 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 
 RUN apk add --no-cache openssh
 
-RUN chmod -R 700 /root/.ssh
+# SSH Config
+RUN mkdir /root/.ssh
+COPY setup/ssh_config /root/.ssh/config
+RUN echo -e ${CKANEXT_HARVEST_SECRET} > /root/.ssh/id_rsa
+COPY setup/known_hosts /root/.ssh/known_hosts
+
+RUN chmod -R 755 /root/.ssh
 RUN chmod 700 /root/.ssh
 RUN chmod 400 /root/.ssh/id_rsa
 #RUN chmod 777 /root/.ssh/config
 
 RUN ls -l -a /root/.ssh
 
-RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
-RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+RUN cat /root/.ssh/id_rsa
+RUN cat root/.ssh/config
+
+#RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+#RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest 
 RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
