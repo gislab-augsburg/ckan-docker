@@ -68,7 +68,7 @@ RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolat
 RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not self._read_connection_has_correct_privileges():|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 
-#RUN apk add --no-cache openssh
+RUN apk add --no-cache openssh
 
 # SSH Config
 RUN mkdir /root/.ssh
