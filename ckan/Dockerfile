@@ -73,7 +73,7 @@ RUN apk add --no-cache openssh
 # SSH Config
 RUN mkdir /root/.ssh
 COPY setup/ssh_config /root/.ssh/config
-RUN echo -e ${CKANEXT_HARVEST_SECRET} > /root/.ssh/id_rsa
+RUN echo -e ${CKANEXT_SECRET} > /root/.ssh/id_rsa
 #COPY setup/known_hosts /root/.ssh/known_hosts
 
 RUN chmod -R 755 /root/.ssh
