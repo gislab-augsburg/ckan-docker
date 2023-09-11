@@ -1,2 +1,4 @@
 Host gitlab_muenchen
-	Hostname git.muenchen.de
+    Hostname git.muenchen.de
+    IdentityFile /root/.ssh/id_rsa
+    IdentitiesOnly yes

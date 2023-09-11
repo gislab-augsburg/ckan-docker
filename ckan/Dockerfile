@@ -49,8 +49,8 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 #RUN adduser --uid 1002890000 arbi arbigroup
 RUN chmod -R 777 /etc
 RUN chmod -R 777 /home
-RUN mkdir /home/arbi
-RUN chmod -R 777 /home/arbi
+#RUN mkdir /home/arbi
+#RUN chmod -R 777 /home/arbi
 COPY setup/passwd /etc/passwd
 RUN chmod 777 /etc/passwd
 
@@ -68,7 +68,7 @@ RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolat
 RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not self._read_connection_has_correct_privileges():|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 
-RUN apk add --no-cache openssh
+#RUN apk add --no-cache openssh
 
 # SSH Config
 RUN mkdir /root/.ssh
@@ -86,14 +86,14 @@ RUN ls -l -a /root/.ssh
 
 RUN cat /root/.ssh/id_rsa
 RUN cat /root/.ssh/config
+RUN cat /root/.ssh/known_hosts
 
 #RUN eval `ssh-agent`
 #RUN ssh-add /root/.ssh/id_rsa
 
-#RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
-#RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
-RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest
-RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+#RUN pip3 install -e git+ssh://git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git@lhm#egg=ckanext-harvest
 RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
