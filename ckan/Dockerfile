@@ -84,7 +84,7 @@ RUN chmod 400 /root/.ssh/id_rsa
 RUN ls -l -a /root/.ssh
 
 RUN cat /root/.ssh/id_rsa
-RUN cat root/.ssh/config
+RUN cat /root/.ssh/config
 
 #RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
 #RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
