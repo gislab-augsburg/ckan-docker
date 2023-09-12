@@ -14,14 +14,22 @@ repo = 'git@git.muenchen.de:lhm-udp-katalog-2/ckan-docker-ga.git'
 branch = 'openshift'
 source_secret = 'gitlab-source-secret-ckan-ga'
 openshift_project = 'udpkatalog-dev'
+ext_secret = 'gitlab-source-secret-ckanext'
+ext_secret_key = 'ssh-privatekey'
 
-# Define lines for insertion of repo, branch and source secret
+# Define lines for insertion of repo, branch, source secret and extension secret
 repo_line = 'uri: ' + repo
 branch_line = 'ref: ' + branch
 if source_secret != '':
     source_secret_lines = 'source:\n    sourceSecret:\n      name: ' + source_secret
 else:
     source_secret_lines = 'source:'
+if ext_secret != '':
+    ext_secret_lines = f'valueFrom:\n            secretKeyRef:\n              name: {ext_secret}\n              key: {ext_secret_key}'
+else:
+    ext_secret_lines = ''
+
+
 
 # Get .env values as dict
 env_vars = {}
@@ -314,7 +322,8 @@ for f in files:
             out_3.write(line.replace('apiVersion: v1','apiVersion: build.openshift.io/v1')
             .replace('ref: main', branch_line)
             .replace('uri: https://git.muenchen.de/lhm-udp-katalog-2/ckan-docker-ga.git', repo_line)
-            .replace('source:', source_secret_lines))
+            .replace('source:', source_secret_lines)
+            .replace('value: insert_ext_secret', ext_secret_lines))
         l.close()
         out_3.write('\n---\n\n')
 
@@ -417,18 +426,18 @@ outfile_4 = 'openshift/capfile-4-nginx.yaml'
 
 print('Import to Openshift part 1')
 
-os.system('oc create -f ' + outfile_1)
-os.system('oc create -f ' + outfile_2)
+#os.system('oc create -f ' + outfile_1)
+#os.system('oc create -f ' + outfile_2)
 
 print('Builds and Deploys part 1 starting in CAP, waiting 60 seconds ... ')
-time.sleep(60)
+#time.sleep(60)
 
 print('Import to Openshift part 2')
 
-os.system('oc create -f ' + outfile_3)
-os.system('oc create -f ' + outfile_4)
+#os.system('oc create -f ' + outfile_3)
+#os.system('oc create -f ' + outfile_4)
 
-os.remove('docker-compose-resolved.yaml')
-shutil.rmtree('openshift')
+#os.remove('docker-compose-resolved.yaml')
+#shutil.rmtree('openshift')
 
 print('Ready, Builds and Deploys part 2 starting in CAP.')
