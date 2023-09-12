@@ -38,11 +38,11 @@ RUN apk add --no-cache openssh
 RUN mkdir /root/.ssh
 COPY setup/ssh_config /root/.ssh/config
 RUN echo -e ${CKANEXT_SECRET} > /root/.ssh/id_rsa
-#COPY setup/known_hosts /root/.ssh/known_hosts
+RUN ssh-keyscan -t rsa git.muenchen.de >> /root/.ssh/known_hosts
 RUN chmod -R 755 /root/.ssh
 RUN chmod 700 /root/.ssh
 RUN chmod 400 /root/.ssh/id_rsa
-#RUN chmod 600 /root/.ssh/known_hosts
+RUN chmod 600 /root/.ssh/known_hosts
 
 # Install ckanext-harvest
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
