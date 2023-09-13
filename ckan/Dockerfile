@@ -49,6 +49,10 @@ RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /
 RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
 RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
+# Install ckanext-scheming
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git /srv/app/src/ckanext-scheming
+RUN pip3 install -e ${APP_DIR}/src/ckanext-scheming
+
 ## Changes for openshift permissions: Allow all but /proc and /sys
 RUN chmod -R 777 /bin
 RUN chmod -R 777 /dev 
