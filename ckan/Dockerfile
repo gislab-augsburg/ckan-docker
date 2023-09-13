@@ -53,6 +53,9 @@ RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git /srv/app/src/ckanext-scheming
 RUN pip3 install -e ${APP_DIR}/src/ckanext-scheming
 
+# Copy docker-entrypoint scripts
+COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
+
 ## Changes for openshift permissions: Allow all but /proc and /sys
 RUN chmod -R 777 /bin
 RUN chmod -R 777 /dev 
@@ -70,17 +73,6 @@ RUN chmod -R 777 /srv
 RUN chmod -R 777 /tmp
 RUN chmod -R 777 /usr
 RUN chmod -R 777 /var
-
-COPY patches ${APP_DIR}/patches
-
-RUN for d in $APP_DIR/patches/*; do \
-        if [ -d $d ]; then \
-            for f in `ls $d/*.patch | sort -g`; do \
-                cd $SRC_DIR/`basename "$d"` && echo "$0: Applying patch $f to $SRC_DIR/`basename $d`"; patch -p1 < "$f" ; \
-            done ; \
-        fi ; \
-    done
-
 
 
 
