@@ -53,6 +53,22 @@ RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git /srv/app/src/ckanext-scheming
 RUN pip3 install -e ${APP_DIR}/src/ckanext-scheming
 
+# Install ckanext-spatial
+RUN pip install --upgrade pip
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git /srv/app/src/ckanext-spatial
+RUN pip install -e ${APP_DIR}/src/ckanext-spatial
+RUN apk add geos-dev proj proj-util proj-dev
+RUN export PROJ_DIR=/usr/bin
+RUN PROJ_DIR=/usr/ pip install pyproj
+RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
+COPY extensions/spatial/search.html ${APP_DIR}/src/ckan/ckan/templates/package/search.html
+COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/read.html
+# Fix Harvesting Attribute Error 'str' and TypeError: str cannot be used as validator ... 
+# in ckanext-spatial like in ckanext-harvest, see 
+# https://github.com/ckan/ckanext-harvest/pull/461/commits/e1b172490d44f203cd82aa616276a00f84a56fae :
+# COPY extensions/spatial/base.py /srv/app/src/ckanext-spatial/ckanext/spatial/harvesters/base.py -> changed in ckanext-spatial
+COPY extensions/spatial/license.py /srv/app/src/ckan/ckan/model/license.py
+
 # Copy docker-entrypoint scripts
 COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
 
