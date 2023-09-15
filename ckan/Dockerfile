@@ -11,6 +11,20 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
         cp /usr/share/zoneinfo/${TZ} /etc/localtime ;\
     fi ;
 
+# Include gitconfig
+COPY setup/.gitconfig /root/.gitconfig
+
+# Install SSH and include SSH Config
+RUN apk add --no-cache openssh
+RUN mkdir /root/.ssh
+COPY setup/ssh_config /root/.ssh/config
+RUN echo -e ${CKANEXT_SECRET} > /root/.ssh/id_rsa
+RUN ssh-keyscan -t rsa git.muenchen.de >> /root/.ssh/known_hosts
+RUN chmod -R 755 /root/.ssh
+RUN chmod 700 /root/.ssh
+RUN chmod 400 /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/known_hosts
+
 # Install ckanext-spatial
 #RUN pip install --upgrade pip
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git /srv/app/src/ckanext-spatial
@@ -47,19 +61,7 @@ RUN sed -i "s|self.parser = ConfigParser()|self.parser = ConfigParser(interpolat
 RUN sed -i "s|if not self._read_connection_has_correct_privileges():|#if not self._read_connection_has_correct_privileges():|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#self._log_or_raise('The read-only user has write privileges.')|g" /srv/app/src/ckan/ckanext/datastore/backend/postgres.py
 
-# Include gitconfig
-COPY setup/.gitconfig /root/.gitconfig
-
-# Install SSH and include SSH Config
-RUN apk add --no-cache openssh
-RUN mkdir /root/.ssh
-COPY setup/ssh_config /root/.ssh/config
-RUN echo -e ${CKANEXT_SECRET} > /root/.ssh/id_rsa
-RUN ssh-keyscan -t rsa git.muenchen.de >> /root/.ssh/known_hosts
-RUN chmod -R 755 /root/.ssh
-RUN chmod 700 /root/.ssh
-RUN chmod 400 /root/.ssh/id_rsa
-RUN chmod 600 /root/.ssh/known_hosts
+##gitconfig, ssh
 
 # Install ckanext-harvest
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
