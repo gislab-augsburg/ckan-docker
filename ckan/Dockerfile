@@ -59,7 +59,7 @@ RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git /
 RUN pip install -e ${APP_DIR}/src/ckanext-spatial
 RUN apk add geos-dev proj proj-util proj-dev
 RUN export PROJ_DIR=/usr/bin
-RUN PROJ_DIR=/usr/ pip install pyproj
+RUN PROJ_DIR=/usr/ pip3 install pyproj
 RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 COPY extensions/spatial/search.html ${APP_DIR}/src/ckan/ckan/templates/package/search.html
 COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/read.html
