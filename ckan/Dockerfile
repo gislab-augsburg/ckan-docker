@@ -26,9 +26,9 @@ RUN chmod 400 /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/known_hosts
 
 # Install ckanext-spatial
-#RUN pip install --upgrade pip
+RUN pip install --upgrade pip
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git /srv/app/src/ckanext-spatial
-RUN pip install -e ${APP_DIR}/src/ckanext-spatial
+RUN pip install --use-pep517 -e ${APP_DIR}/src/ckanext-spatial
 RUN apk add geos-dev proj proj-util proj-dev
 RUN export PROJ_DIR=/usr/bin
 # Until pyproj 3.6.0 uncompatibility with Cython 3.0 is solved (https://github.com/pyproj4/pyproj/issues/1342, https://bugs.gentoo.org/911736):
