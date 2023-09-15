@@ -11,6 +11,23 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
         cp /usr/share/zoneinfo/${TZ} /etc/localtime ;\
     fi ;
 
+# Install ckanext-spatial
+#RUN pip install --upgrade pip
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git /srv/app/src/ckanext-spatial
+RUN pip install -e ${APP_DIR}/src/ckanext-spatial
+RUN apk add geos-dev proj proj-util proj-dev
+RUN export PROJ_DIR=/usr/bin
+# Until pyproj 3.6.0 uncompatibility with Cython 3.0 is solved (https://github.com/pyproj4/pyproj/issues/1342, https://bugs.gentoo.org/911736):
+RUN PROJ_DIR=/usr/ pip install pyproj
+RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
+COPY extensions/spatial/search.html ${APP_DIR}/src/ckan/ckan/templates/package/search.html
+COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/read.html
+# Fix Harvesting Attribute Error 'str' and TypeError: str cannot be used as validator ... 
+# in ckanext-spatial like in ckanext-harvest, see 
+# https://github.com/ckan/ckanext-harvest/pull/461/commits/e1b172490d44f203cd82aa616276a00f84a56fae :
+# COPY extensions/spatial/base.py /srv/app/src/ckanext-spatial/ckanext/spatial/harvesters/base.py -> changed in ckanext-spatial
+COPY extensions/spatial/license.py /srv/app/src/ckan/ckan/model/license.py
+
 # Create user to arbitrary openshift uid/ gid:
 RUN chmod -R 777 /etc
 RUN chmod -R 777 /home
@@ -54,13 +71,13 @@ RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git 
 RUN pip3 install -e ${APP_DIR}/src/ckanext-scheming
 
 # Install ckanext-spatial
-RUN pip install --upgrade pip
+#RUN pip install --upgrade pip
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git /srv/app/src/ckanext-spatial
 RUN pip install -e ${APP_DIR}/src/ckanext-spatial
 RUN apk add geos-dev proj proj-util proj-dev
 RUN export PROJ_DIR=/usr/bin
 # Until pyproj 3.6.0 uncompatibility with Cython 3.0 is solved (https://github.com/pyproj4/pyproj/issues/1342, https://bugs.gentoo.org/911736):
-RUN PROJ_DIR=/usr/ pip install pyproj==3.5.0
+RUN PROJ_DIR=/usr/ pip install pyproj
 RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 COPY extensions/spatial/search.html ${APP_DIR}/src/ckan/ckan/templates/package/search.html
 COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/read.html
