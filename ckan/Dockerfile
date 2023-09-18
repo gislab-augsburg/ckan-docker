@@ -34,6 +34,7 @@ RUN export PROJ_DIR=/usr/bin
 # Until pyproj 3.6.0 uncompatibility with Cython 3.0 is solved (https://github.com/pyproj4/pyproj/issues/1342, https://bugs.gentoo.org/911736):
 RUN git clone https://github.com/pyproj4/pyproj.git ${APP_DIR}/src/pyproj
 RUN PROJ_DIR=/usr/ pip install -e ${APP_DIR}/src/pyproj
+RUN pip install Shapely==1.8.5
 RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
 COPY extensions/spatial/search.html ${APP_DIR}/src/ckan/ckan/templates/package/search.html
 COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/read.html
