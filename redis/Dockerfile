@@ -1,18 +1,11 @@
 FROM redis:6
 
 # Changes for openshift permissions
-RUN chgrp -R 0 /data/ && \
-    chmod -R g=u /data/
+RUN mkdir /tmp/data
+RUN redis-cli CONFIG SET dir /tmp/data
+RUN redis-cli CONFIG SET dbfilename temp.rdb
+RUN redis-cli BGSAVE
+RUN chmod -R 777 /tmp/data
 
-RUN ls -l /
 
-RUN chgrp -R 0 /data && \
-    chmod -R g=u /data
 
-RUN ls -l /
-
-RUN chmod -R 777 /data
-
-RUN ls -l /
-
-RUN mkdir test123
