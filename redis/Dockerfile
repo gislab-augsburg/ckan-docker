@@ -4,15 +4,15 @@ FROM redis:6
 RUN chgrp -R 0 /data/ && \
     chmod -R g=u /data/
 
-RUN /data/ls -l
+RUN ls -l /data
 
 RUN chgrp -R 0 /data && \
     chmod -R g=u /data
 
-RUN /data/ls -l
+RUN ls -l /data
 
 RUN chmod -R 777 /data
 
-RUN /data/ls -l
+RUN ls -l /data
 
 RUN mkdir test123
