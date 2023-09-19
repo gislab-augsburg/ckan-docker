@@ -63,7 +63,9 @@ services:
 
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
-    image: redis:${REDIS_VERSION}
+    build:
+      context: redis/
+      dockerfile: Dockerfile
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
