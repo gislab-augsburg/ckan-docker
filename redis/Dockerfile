@@ -5,4 +5,4 @@ RUN mkdir /tmp/data
 RUN chmod -R 777 /tmp/data
 ADD setup/start.sh /tmp/
 RUN chmod +x /tmp/start.sh
-CMD ["/tmp/start.sh"]
+CMD sh /tmp/start.sh
