@@ -66,16 +66,38 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 ##gitconfig, ssh
 
 # Install ckanext-harvest
-RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git /srv/app/src/ckanext-harvest
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git ${APP_DIR}/src/ckanext-harvest
 RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
 RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 # Install ckanext-scheming
-RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git /srv/app/src/ckanext-scheming
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git ${APP_DIR}/src/ckanext-scheming
 RUN pip3 install -e ${APP_DIR}/src/ckanext-scheming
 
 # Install ckanext-spatial
-#...
+RUN pip install --upgrade pip
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-spatial.git ${APP_DIR}/src/ckanext-spatial
+RUN pip install -e ${APP_DIR}/src/ckanext-spatial
+RUN apk add geos-dev proj proj-util proj-dev
+RUN export PROJ_DIR=/usr/bin
+# Until pyproj 3.6.0 uncompatibility with Cython 3.0 is solved (https://github.com/pyproj4/pyproj/issues/1342, https://bugs.gentoo.org/911736):
+RUN git clone https://github.com/pyproj4/pyproj.git ${APP_DIR}/src/pyproj
+RUN PROJ_DIR=/usr/ pip install -e ${APP_DIR}/src/pyproj
+RUN pip install Shapely==1.8.5
+RUN pip3 install -r ${APP_DIR}/src/ckanext-spatial/requirements.txt
+COPY extensions/spatial/search.html ${APP_DIR}/src/ckan/ckan/templates/package/search.html
+COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/read.html
+# Fix Harvesting Attribute Error 'str' and TypeError: str cannot be used as validator ... 
+# in ckanext-spatial like in ckanext-harvest, see 
+# https://github.com/ckan/ckanext-harvest/pull/461/commits/e1b172490d44f203cd82aa616276a00f84a56fae :
+# COPY extensions/spatial/base.py /srv/app/src/ckanext-spatial/ckanext/spatial/harvesters/base.py -> changed in ckanext-spatial
+COPY extensions/spatial/license.py /srv/app/src/ckan/ckan/model/license.py
+
+# Install ckanext-xLoader
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-xloader.git ${APP_DIR}/src/ckanext-xloader
+RUN pip3 install -e ${APP_DIR}/src/ckanext-xloader && \ 
+    pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
+    pip3 install -U requests[security]
 
 # Copy docker-entrypoint scripts
 COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
