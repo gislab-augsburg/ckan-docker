@@ -46,12 +46,6 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 
 ##gitconfig, ssh
 
-# Install ckanext-xLoader
-RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-xloader.git ${APP_DIR}/src/ckanext-xloader
-RUN pip3 install -e ${APP_DIR}/src/ckanext-xloader && \ 
-    pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
-    pip3 install -U requests[security]
-
 # Install ckanext-harvest
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git ${APP_DIR}/src/ckanext-harvest
 RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
@@ -60,6 +54,14 @@ RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 # Install ckanext-scheming
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git ${APP_DIR}/src/ckanext-scheming
 RUN pip3 install -e ${APP_DIR}/src/ckanext-scheming
+
+# Install ckanext-repeating
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-repeating.git ${APP_DIR}/src/ckanext-repeating
+RUN pip install -e ${APP_DIR}/src/ckanext-repeating
+
+# Install ckanext-composite
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-composite.git ${APP_DIR}/src/ckanext-composite
+RUN pip install -e ${APP_DIR}/src/ckanext-composite
 
 # Install ckanext-spatial
 RUN pip install --upgrade pip
@@ -79,6 +81,12 @@ COPY extensions/spatial/read.html ${APP_DIR}/src/ckan/ckan/templates/package/rea
 # https://github.com/ckan/ckanext-harvest/pull/461/commits/e1b172490d44f203cd82aa616276a00f84a56fae :
 # COPY extensions/spatial/base.py /srv/app/src/ckanext-spatial/ckanext/spatial/harvesters/base.py -> changed in ckanext-spatial
 COPY extensions/spatial/license.py /srv/app/src/ckan/ckan/model/license.py
+
+# Install ckanext-xLoader
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-xloader.git ${APP_DIR}/src/ckanext-xloader
+RUN pip3 install -e ${APP_DIR}/src/ckanext-xloader && \ 
+    pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
+    pip3 install -U requests[security]
 
 # Copy docker-entrypoint scripts
 COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
