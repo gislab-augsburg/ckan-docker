@@ -93,6 +93,11 @@ RUN git clone -b master git@git.muenchen.de:lhm-udp-katalog-2/ckanext-lhm.git ${
 RUN python ${APP_DIR}/src/ckanext-lhm/setup.py develop 
 RUN pip install -r ${APP_DIR}/src/ckanext-lhm/dev-requirements.txt
 
+# Install ckanext-resourcedictionary
+RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-resourcedictionary.git ${APP_DIR}/src/ckanext-resourcedictionary
+RUN pip install -e ${APP_DIR}/src/ckanext-resourcedictionary
+RUN pip install -r ${APP_DIR}/src/ckanext-resourcedictionary/requirements.txt 
+
 # Copy docker-entrypoint scripts
 COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
 
