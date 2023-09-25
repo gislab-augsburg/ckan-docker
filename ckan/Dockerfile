@@ -88,6 +88,11 @@ RUN pip3 install -e ${APP_DIR}/src/ckanext-xloader && \
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
     pip3 install -U requests[security]
 
+# Install ckanext-lhm
+RUN git clone -b master git@git.muenchen.de:lhm-udp-katalog-2/ckanext-lhm.git ${APP_DIR}/src/ckanext-lhm
+RUN python ${APP_DIR}/src/ckanext-lhm/setup.py develop 
+RUN pip install -r ${APP_DIR}/src/ckanext-lhm/dev-requirements.txt
+
 # Copy docker-entrypoint scripts
 COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
 
