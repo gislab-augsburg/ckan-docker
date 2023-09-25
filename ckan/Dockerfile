@@ -72,9 +72,9 @@ RUN pip3 install -e ${APP_DIR}/src/ckanext-xloader && \
     pip3 install -U requests[security]
 
 # Install ckanext-lhm
-#RUN git clone -b master git@git.muenchen.de:lhm-udp-katalog-2/ckanext-lhm.git ${APP_DIR}/src/ckanext-lhm
-#RUN python ${APP_DIR}/src/ckanext-lhm/setup.py develop 
-#RUN pip install -r ${APP_DIR}/src/ckanext-lhm/dev-requirements.txt
+RUN git clone -b master git@git.muenchen.de:lhm-udp-katalog-2/ckanext-lhm.git ${APP_DIR}/src/ckanext-lhm
+RUN pip install -e ${APP_DIR}/src/ckanext-lhm  
+RUN pip install -r ${APP_DIR}/src/ckanext-lhm/requirements.txt
 
 # Install ckanext-resourcedictionary
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-resourcedictionary.git ${APP_DIR}/src/ckanext-resourcedictionary
