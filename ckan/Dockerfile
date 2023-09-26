@@ -47,9 +47,9 @@ RUN sed -i "s|self._log_or_raise('The read-only user has write privileges.')|#se
 ##gitconfig, ssh
 
 # Install ckanext-harvest
-RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git ${APP_DIR}/src/ckanext-harvest
-RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
-RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+#RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-harvest.git ${APP_DIR}/src/ckanext-harvest
+#RUN pip3 install -e ${APP_DIR}/src/ckanext-harvest
+#RUN pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 # Install ckanext-scheming
 RUN git clone -b lhm git@git.muenchen.de:lhm-udp-katalog-2/ckanext-scheming.git ${APP_DIR}/src/ckanext-scheming
@@ -82,7 +82,7 @@ RUN pip install -e ${APP_DIR}/src/ckanext-resourcedictionary
 RUN pip install -r ${APP_DIR}/src/ckanext-resourcedictionary/requirements.txt 
 
 # Copy docker-entrypoint scripts
-COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
+#COPY setup/ext_config.sh /docker-entrypoint.d/ext_config.sh
 
 ## Changes for openshift permissions: Allow all but /proc and /sys
 RUN chmod -R 777 /bin
