@@ -16,6 +16,10 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 RUN set -ex && \
   apt update && apt install wget
 
+# Install dev plugin
+RUN set -ex && \
+  pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-glab.git@main#egg=ckanext-glab'
+
 # Set Plugins
 ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     scheming_datasets scheming_groups scheming_organizations \
@@ -24,7 +28,7 @@ ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     resourcedictionary datastore xloader hierarchy_group_form \
     password_policy resource_proxy geo_view geojson_view wmts_view shp_view \
     harvest ckan_harvester csw_harvester waf_harvester doc_harvester \
-    envvars"
+    glab envvars"
 
 # CKAN configuration
 RUN set -ex && \
@@ -32,5 +36,8 @@ RUN set -ex && \
   ckan config-tool "${CKAN_INI}" "scheming.dataset_fallback = false" && \
   ckan config-tool "${CKAN_INI}" "scheming.presets = ckanext.scheming:presets.json ckanext.repeating:presets.json ckanext.composite:presets.json ckanext.lhm:schemas/presets.yaml" && \
   ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml"
+
+# Install dev-requirements
+RUN pip install -r /srv/app/src/ckan/dev-requirements.txt 
 
 USER ckan
