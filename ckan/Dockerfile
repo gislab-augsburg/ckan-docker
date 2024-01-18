@@ -18,7 +18,7 @@ RUN set -ex && \
 
 # Install dev plugin
 RUN set -ex && \
-  pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-glab.git@main#egg=ckanext-glab'
+  pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-glab.git@0612d22#egg=ckanext-glab'
 
 # Set Plugins
 ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
@@ -28,7 +28,7 @@ ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     resourcedictionary datastore xloader hierarchy_group_form \
     password_policy resource_proxy geo_view geojson_view wmts_view shp_view \
     harvest ckan_harvester csw_harvester waf_harvester doc_harvester \
-    glab envvars"
+    gdpr envvars"
 
 # CKAN configuration
 RUN set -ex && \
