@@ -20,6 +20,10 @@ RUN set -ex && \
 RUN set -ex && \
   pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-glab.git@0612d22#egg=ckanext-glab'
 
+# Install iso plugin
+RUN set -ex && \
+  pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-iso.git@3cc0691#egg=ckanext-iso'
+
 # Set Plugins
 ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     scheming_datasets scheming_groups scheming_organizations \
@@ -28,14 +32,18 @@ ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     resourcedictionary datastore xloader hierarchy_group_form \
     password_policy resource_proxy geo_view geojson_view wmts_view shp_view \
     harvest ckan_harvester csw_harvester waf_harvester doc_harvester \
-    gdpr envvars"
+    gdpr iso envvars"
 
 # CKAN configuration
 RUN set -ex && \
   ckan config-tool "${CKAN_INI}" "ckan.plugins = ${CKAN__PLUGINS}" && \
   ckan config-tool "${CKAN_INI}" "scheming.dataset_fallback = false" && \
   ckan config-tool "${CKAN_INI}" "scheming.presets = ckanext.scheming:presets.json ckanext.repeating:presets.json ckanext.composite:presets.json ckanext.lhm:schemas/presets.yaml" && \
-  ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml"
+  ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml" && \
+# new  
+  ckan config-tool "${CKAN_INI}" "ckan.spatial.validator.profiles = iso19139eden" && \
+  ckan config-tool "${CKAN_INI}" "ckanext.spatial.harvest.continue_on_validation_errors = true" && \
+  ckan config-tool "${CKAN_INI}" "ckan.locale_default = de"
 
 # Install dev-requirements
 RUN pip install -r /srv/app/src/ckan/dev-requirements.txt 
