@@ -22,7 +22,7 @@ RUN set -ex && \
 
 # Install iso plugin
 RUN set -ex && \
-  pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-iso.git@3cc0691#egg=ckanext-iso'
+  pip3 install -e 'git+https://github.com/gislab-augsburg/ckanext-iso.git@master#egg=ckanext-iso'
 
 # Set Plugins
 ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
