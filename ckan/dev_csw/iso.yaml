@@ -1,0 +1,916 @@
+scheming_version: 2
+dataset_type: iso19115
+about: Metadata schema iso19115
+# https://semiceu.github.io/GeoDCAT-AP/drafts/latest/geodcat-ap_v2.0.0.svg
+about_url: 
+#######################################
+#######################################
+# DATASET FIELDS
+dataset_fields:
+################################
+################################
+
+# TODO CHECK
+- field_name: owner_org
+  label: Organization
+  preset: dataset_organization
+
+################################
+  # Mandatory
+- field_name: title
+  label: Title
+  display_property: dcat:Dataset/dct:title
+  validators: if_empty_same_as(name) unicode
+  form_snippet: large_text.html
+  #TODO multiple language
+  form_attrs:
+    data-module: slug-preview-target
+  form_placeholder: eg. A descriptive title
+
+# - field_name: alternate-title
+#   label: alternate-title  
+
+- field_name: name
+  label: URL
+  validators: not_empty unicode name_validator package_name_validator
+  form_snippet: slug.html
+  form_placeholder: eg. my-dataset
+  
+  # Mandatory
+  # - abstract ??
+- field_name: notes
+  label: Description
+  #TODO multiple language
+  form_snippet: markdown.html
+  form_placeholder: eg. Some useful notes about the data
+  help_text: Descriptive information about the dataset. Can also include further information  or caveats pertaining to the data.
+
+- field_name: tag_string
+  label: Tags
+  preset: tag_string_autocomplete
+
+#extras_fields:
+
+- field_name: contact-email
+  label: contact-email
+
+- field_name: coupled-resource
+  label: coupled-resource
+
+- field_name: dataset-reference-date
+  label: dataset-reference-date
+  required: false
+  # validators: ignore_missing
+  # repeating_subfields:
+  # - field_name: type
+  #   label: Type
+  # - field_name: value
+  #   label: Value
+  #   required: true
+  # preset: multiple_text
+    
+    
+#TODO test multiple text
+
+
+  
+
+- field_name: unique-resource-identifier
+  label: unique-resource-identifier
+
+- field_name: unique-resource-identifier-full
+  label: unique-resource-identifier-full
+
+- field_name: presentation-form
+  label: presentation-form
+
+# used as 'notes'
+# - field_name: abstract
+#   label: abstract
+
+- field_name: purpose
+  label: purpose
+
+- field_name: responsible-organisation
+  label: responsible-organisation
+  preset: multiple_text
+  # required: false
+  # validators: ignore_missing
+  #1..* #TODO remove required
+
+- field_name: frequency-of-update
+  label: frequency-of-update
+
+- field_name: maintenance-note
+  label: maintenance-note
+
+- field_name: progress
+  label: progress
+  required: false
+  # validators: ignore_missing
+ 
+- field_name: keywords
+  label: keywords
+  required: false
+  validators: ignore_missing
+  repeating_subfields:
+    - field_name: type
+      label: type
+      required: false
+    - field_name: keyword
+      label: keyword
+      preset: multiple_text
+
+- field_name: keyword-inspire-theme
+  label: keyword-inspire-theme
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+- field_name: keyword-controlled-other
+  label: keyword-controlled-other
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+  # preset: multiple_text
+###############################
+# - field_name: usage
+#   label: usage
+# TODO multiple subfields
+  # - field_name: usage
+  #   label: usage
+  # - field_name: contact-info
+  #   label: contact-info
+###############################
+
+- field_name: limitations-on-public-access
+  label: limitations-on-public-access
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+- field_name: access-constraints
+  label: access-constraints
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+- field_name: use-constraints
+  label: use-constraints
+
+- field_name: use-constraints-code
+  label: use-constraints-code
+
+- field_name: legal-constraints-reference-code
+  label: legal-constraints-reference-code
+
+  ###############################
+# - field_name: aggregation-info
+#   label: aggregation-info
+  #*
+  # TODO subfields
+  # - field_name: aggregate-dataset-name
+  #   label: aggregate-dataset-name
+
+  # - field_name: aggregate-dataset-identifier
+  #   label: aggregate-dataset-identifier
+
+  # - field_name: association-type
+  #   label: association-type
+
+  # - field_name: initiative-type
+  #   label: initiative-type
+  
+###############################
+
+- field_name: spatial
+  label: spatial
+  preset: json_object
+
+- field_name: spatial-data-service-type 
+  label: spatial-data-service-type
+
+- field_name: spatial-resolution
+  label: spatial-resolution
+
+- field_name: spatial-resolution-units
+  label: spatial-resolution-units
+  
+  #*
+- field_name: equivalent-scale
+  label: equivalent-scale
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+  #*
+- field_name: dataset-language
+  label: dataset-language
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+  #*
+- field_name: topic-category
+  label: topic-category
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+  #*
+- field_name: extent-controlled
+  label: extent-controlled
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+  #*
+- field_name: extent-free-text
+  label: extent-free-text
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+# - field_name: bbox
+#   label: bbox
+  #*
+  # TODO
+
+- field_name: temporal-extent-begin
+  label: temporal-extent-begin
+
+- field_name: temporal-extent-end
+  label: temporal-extent-end
+
+- field_name: vertical-extent
+  label: vertical-extent
+  preset: json_object
+  required: false
+  # validators: ignore_missing
+
+- field_name: vertical-extent-crs
+  label: vertical-extent-crs
+  preset: json_object
+  required: false
+  # validators: ignore_missing
+
+  #*
+- field_name: coupled-resource
+  label: coupled-resource
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+- field_name: additional-information-source
+  label: additional-information-source
+
+- field_name: data-format
+  label: data-format
+  required: false
+  validators: ignore_missing
+  repeating_subfields:
+    - field_name: name
+      label: name
+    - field_name: version
+      label: version
+
+- field_name: distributor
+  label: distributor
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+- field_name: resource-locator
+  label: resource-locator
+
+- field_name: resource-locator-identification
+  label: resource-locator-identification
+
+- field_name: conformity-specification
+  label: conformity-specification
+
+- field_name: conformity-pass
+  label: conformity-pass
+
+- field_name: conformity-explanation
+  label: conformity-explanation
+
+- field_name: lineage
+  label: lineage
+  required: false
+
+##########################
+# - field_name: browse-graphic
+#   label: browse-graphic
+  # TODO subfields
+##########################
+- field_name: graphic-preview-type
+  label: graphic-preview-type
+
+- field_name: graphic-preview-description
+  label: graphic-preview-description
+
+- field_name: graphic-preview-file
+  label: graphic-preview-file
+  preset: resource_url_upload
+##########################
+
+- field_name: author
+  label: author
+  #1..*
+
+##########################
+# - field_name: citation
+#   label: citation
+  #1..*
+  # TODO subfields
+  # - field_name: type
+  #   label: type
+  # - field_name: id
+  #   label: id
+  #   # TODO subfields
+  # - field_name: code
+  #   label: code
+  # - field_name: authority
+  #   label: authority
+  # - field_name: code-space
+  #   label: code-space
+  # - field_name: version
+  #   label: version
+##########################
+
+- field_name: licence
+  label: licence
+  preset: multiple_text
+  required: false
+  # validators: ignore_missing
+
+- field_name: version
+  label: version
+
+- field_name: issued
+  label: issued
+  preset: date
+  help_text: This property contains the date of formal issuance (e.g., publication) of the Dataset.
+
+- field_name: publisher
+  label: publisher
+
+- field_name: guid
+  # validators: convert_from_extras
+  label: guid
+
+- field_name: metadata-language
+  label: metadata-language
+
+- field_name: metadata-standard-name
+  label: metadata-standard-name
+
+- field_name: metadata-standard-version
+  label: metadata-standard-version
+
+- field_name: resource-type
+  label: resource-type
+
+- field_name: metadata-point-of-contact
+  label: metadata-point-of-contact
+
+
+- field_name: cited-responsible-party
+  label: cited-responsible-party
+
+
+- field_name: metadata-reference-date
+  label: metadata-reference-date
+
+- field_name: metadata-date
+  label: metadata-date
+
+- field_name: spatial-reference-system
+  label: spatial-reference-system
+
+- field_name: completed
+  label: completed
+
+- field_name: responsible-party
+  label: responsible-party
+  required: false
+  validators: ignore_missing
+  repeating_subfields:
+    - field_name: name
+      label: name
+    - field_name: roles
+      label: roles
+      preset: multiple_text
+
+- field_name: spatial-data-service-type
+  label: spatial-data-service-type
+
+# - field_name: spatial_harvester
+#   label: spatial_harvester
+# - field_name: harvest_object_id
+#   label: harvest_object_id
+# - field_name: harvest_source_id
+#   label: harvest_source_id
+# - field_name: harvest_source_title
+#   label: harvest_source_title
+
+# #######################################
+# #######################################
+# # RESOURCE FIELDS
+resource_fields:
+# ################################
+
+- field_name: url
+  label: URL
+  preset: resource_url_upload
+
+- field_name: name
+  label: Name
+  form_placeholder: eg. Observations of X at Y
+
+- field_name: description
+  label: Description
+  form_snippet: markdown.html
+  form_placeholder: Some useful notes about the resource
+
+- field_name: resource_locator_function
+  label: resource_locator_function
+
+- field_name: resource_locator_protocol
+  label: resource_locator_protocol
+
+- field_name: format
+  label: format
+
+
+
+
+
+
+
+
+
+
+
+
+
+#   # RECOMMENDED 
+# - field_name: theme
+#   label: Theme
+#   display_property: dcat:Dataset/dcat:theme
+#   # skos:Concept
+#   preset: multiple_text
+
+#   # RECOMMENDED 
+# - field_name: keyword
+#   label: Keyword
+#   display_property: dcat:Dataset/dcat:keyword
+#   preset: multiple_text
+
+# # RECOMMENDED
+# - field_name: contactPoint
+#   label: Contact Point
+#   display_property: dcat:Dataset/dcat:contactPoint
+#   # vcard:Kind
+#   preset: multiple_text
+  
+# # adms:identifier: adms:Identifier [0..n]
+
+# - field_name: identifier
+#   label: Identifier
+#   display_property: dcat:Dataset/adms:identifier
+#   preset: multiple_text
+#   #validators:TODO url_validator ignore_missing
+#   help_text: This property contains the main identifier for the Dataset, e.g., the URI or other unique identifier in the context of the Catalogue.
+
+# #
+# # adms:versionNotes [0..n]
+
+# - field_name: versionNotes
+#   label: version notes
+#   display_property: dcat:Dataset/adms:versionNotes
+#   preset: multiple_text
+#   help_text: This property contains a description of the differences between this version and a previous version of the Dataset. This property can be repeated for parallel language versions of the version notes
+
+# #
+# # dcat:landingPage: foaf:Document [0..n]
+
+# - field_name: landingPage
+#   label: landing Page
+#   display_property: dcat:Dataset/dcat:landingPage
+#   preset: multiple_text
+#   help_text: This property refers to a Web page that provides access to the Dataset, its Distributions and/or additional information. It is intended to point to a landing page at the original data provider, not to a page on a site of a third party, such as an aggregator.
+
+# #
+# # dcat:qualifiedRelation: dcat:Relationship [0..n]
+
+# # TODO RELATIONS
+
+# #
+# # dcat:spatialResolutionInMeters [0..n]
+
+# - field_name: spatialResolutionInMeters
+#   label: Spatial resolution in meters
+#   display_property: dcat:Dataset/dcat:spatialResolutionInMeters
+#   preset: multiple_text
+#   help_text: This property refers to the minimum spatial separation resolvable in a Dataset, measured in metres.
+
+# #
+# # dcat:temporalResolution [0..n]
+
+# - field_name: temporalResolution
+#   label: Temporal Resolution
+#   display_property: dcat:Dataset/dcat:temporalResolution
+#   preset: multiple_text
+#   help_text: This property refers to the minimum time period resolvable in the Dataset.
+
+# #
+# # dct:accessRights: dct:RightsStatement [0..1]
+# #
+# # Optional properties for Dataset
+# # https://semiceu.github.io/GeoDCAT-AP/releases/#optional-properties-for-dataset
+
+# - field_name: accessRights
+#   label: Access rights
+#   display_property: dcat:Dataset/dct:accessRights
+#   help_text: This property refers to information that indicates whether the Dataset is open data, has access restrictions or is not public.
+
+# # dct:accrualPeriodicity: dct:Frequency [0..1]
+# #
+
+# - field_name: accrualPeriodicity
+#   label: Accrual periodicity
+#   display_property: dcat:Dataset/dct:accrualPeriodicity
+#   help_text: This property refers to the frequency at which the Dataset is updated.
+
+# # dct:conformsTo: dct:Standard [0..n]
+
+# - field_name: conformsTo
+#   label: conforms To
+#   display_property: dcat:Dataset/dct:conformsTo
+#   preset: multiple_text
+#   help_text: This property refers to an implementing rule or other specification.
+
+# #
+# # dct:created [0..1]
+
+# # TODO check creation time labeling
+
+# #
+# # dct:identifier [0..n]
+
+# # TODO uuid
+
+# #
+# # dct:isReferencedBy: rdfs:Resource [0..n]
+
+# - field_name: isReferencedBy
+#   label: Is Referenced by
+#   display_property: dcat:Dataset/dct:isReferencedBy
+#   preset: multiple_text
+#   help_text: This property is about a related resource, such as a publication, that references, cites, or otherwise points to the Dataset.
+
+# #
+# # dct:issued [0..1]
+
+# - field_name: issued
+#   label: issued
+#   display_property: dcat:Dataset/dct:issued
+#   preset: date
+#   help_text: This property contains the date of formal issuance (e.g., publication) of the Dataset.
+
+# #
+# # dct:language: dct:LinguisticSystem [0..n]
+
+# - field_name: language
+#   label: Language
+#   display_property: dcat:Dataset/dct:language
+#   preset: multiple_checkbox
+#   choices:
+#   - value: ARA
+#     label: Arabic
+#   - value: ZHO
+#     label: Chinese
+#   - value: ENG
+#     label: English
+#   - value: FRA
+#     label: French
+#   - value: RUS
+#     label: Russian
+#   - value: SPA
+#     label: Spanish
+
+# #
+# # dct:modified [0..1]
+
+# - field_name: modified
+#   label: Modified
+#   display_property: dcat:Dataset/dct:modified
+#   help_text: This property contains the most recent date on which the Dataset was changed or modified.
+
+# #
+# # dct:provenance: dct:ProvenanceStatement
+
+# - field_name: provenance
+#   display_property: dcat:Dataset/dct:provenance
+#   label: Provenance
+#   help_text: This property contains a statement about the lineage of a Dataset.
+
+# #
+# # dct:relation: rdfs:Resource [0..n]
+
+# # TODO relationships
+
+# #
+# # dct:subject: skos:Concept [0..n]
+
+# # TODO Ask to Patrizia
+
+# #
+# # dct:type: skos:Concept [0..1]
+
+# # should be automatically provided
+# # TODO map properly to GeoDcat-2
+
+# #
+# # dqv:hasQualityMeasurement: dqv:QualityMeasurement [0..n]
+
+# # TODO
+
+# #
+# # foaf:page: foaf:Document [0..n]
+
+# # TODO
+
+# #
+# # owl:versionInfo [0..1]
+
+# - field_name: versionInfo
+#   label: Version info
+#   display_property: dcat:Dataset/owl:versionInfo
+#   help_text: This property contains a version number or other version designation of the Dataset.
+
+# #
+# # prov:qualifiedAttribution [0..n]
+
+# # TODO check maybe related to: (from DCAT)
+
+# #- field_name: qualifiedAttribution
+# #  label: Qualified attribution
+# #  help_text: This property refers to a link to an Agent having some form of responsibility for the Dataset.
+
+# #
+# # prov:wasGeneratedBy: prov:Activity [0..n]
+
+# - field_name: wasGeneratedBy
+#   label: Was generated by
+#   display_property: dcat:Dataset/prov:wasGeneratedBy
+#   preset: multiple_text
+#   help_text: This property refers to an Activity that generated, or provides the business context for, the creation of the Dataset.
+
+# #
+# # prov:wasUsedBy: prov:Activity [0..n]
+# #
+
+# - field_name: wasUsedBy
+#   label: Was used by
+#   display_property: dcat:Dataset/prov:wasUsedBy
+#   preset: multiple_text
+#   help_text: This property refers to an Activity that used the Dataset. In GeoDCAT-AP, this property MAY be used to specify a testing Activity over a Dataset, against a given Standard, producing as output a conformance degree.
+
+
+# # rdfs:comment [0..n]
+
+# # TODO really needed?
+
+# - field_name: location
+#   display_property: dct:spatial/dct:Location
+#   label: BBOX
+#   form_placeholder: Paste a valid GeoJSON geometry
+#   help_text: Minimum bounding rectangle within which data is available.
+
+
+
+
+
+
+
+
+# - field_name: publisher
+#   label: Publisher
+#   help_text: This property refers to an Agent (organisation) responsible for making the Dataset available.
+
+# #- field_name: hasVersion
+# #  label: Has version
+# #  help_text: This property refers to a related Dataset that is a version, edition, or adaptation of the described Dataset.
+
+# #- field_name: isVersionOf
+# #  label: Is Version of
+# #  help_text: This property refers to a related Dataset of which the described Dataset is a version, edition, or adaptation.
+
+# #- field_name: qualifiedRelation
+# #  label: Qualified relation
+# #  help_text: This property provides a link to a description of a relationship with another resource.
+
+# #- field_name: relation
+# #  label: Relation
+# #  help_text: This property refers to a related resource.
+
+# - field_name: rightsHolder
+#   label: Rights holder
+#   preset: multiple_text
+#   help_text: This property refers to an Agent (organisation) holding rights on the Dataset.
+
+# - field_name: sample
+#   label: Sample
+#   preset: multiple_text
+#   help_text: This property refers to a sample Distribution of the Dataset.
+
+# - field_name: source
+#   label: Source
+#   preset: multiple_text
+#   help_text: This property refers to a related Dataset from which the described Dataset is derived.
+
+# #- field_name: hasQualityMeasurement
+# #  label: Has quality measurement
+# #  help_text: "Refers to the performed quality measurements. In GeoDCAT-AP, this property is used to specify 'spatial resolution', as defined in [INSPIRE-MD-REG], [ISO-19115], and [ISO-19115-1]."
+
+# - field_name: temporal
+#   label: Temporal
+#   help_text: This property refers to a temporal period that the Dataset covers.
+
+# - field_name: custodian
+#   label: Custodian
+#   help_text: Party that accepts accountability and responsibility for the data and ensures appropriate care and maintenance of the resource [ISO-19115].
+
+# - field_name: distributor
+#   label: Distributor
+#   help_text: Party who distributes the resource [ISO-19115].
+
+# - field_name: originator
+#   label: Originator
+#   help_text: Party who created the resource [ISO-19115].
+
+# - field_name: principalInvestigator
+#   label: Principal investigator
+#   help_text: Key party responsible for gathering information and conducting research [ISO-19115].
+
+# - field_name: processor
+#   label: Processor
+#   help_text: Party who has processed the data in a manner such that the resource has been modified [ISO-19115].
+
+# - field_name: resourceProvider
+#   label: Resource Provider
+#   help_text: Party that supplies the resource [ISO-19115].
+
+
+
+
+# #######################################
+# #######################################
+# # RESOURCE FIELDS
+# resource_fields:
+# ################################
+# ################################
+# ################################
+
+# - field_name: url
+#   label: URL
+#   preset: resource_url_upload
+
+# - field_name: name
+#   label: Name
+#   form_placeholder: eg. Observations of X at Y
+
+# #- field_name: accessURL
+# #  label: Access URL
+# #  help_text: For INSPIRE metadata, this property SHOULD be used with the URIs of the "Limitations on public access" code list operated by the INSPIRE Registry [INSPIRE-LPA].
+
+# - field_name: availability
+#   label: Availability
+#   help_text: This property indicates how long it is planned to keep the Distribution of the Dataset available.
+
+# - field_name: description
+#   label: Description
+#   form_snippet: markdown.html
+#   form_placeholder: Some useful notes about the resource
+
+# - field_name: format
+#   label: Format
+#   preset: resource_format_autocomplete
+
+# - field_name: license
+#   label: License
+#   preset: select
+#   help_text: License definitions and additional information can be found at http://opendefinition.org/
+#   choices:
+#   - value:
+#     label: notspecified
+#   - value: https://opendefinition.org/licenses/against-drm
+#     label: Against DRM
+#   - value: https://creativecommons.org/licenses/by/3.0/igo
+#     label: Creative Commons Attribution 3.0 IGO
+#   - value: https://creativecommons.org/licenses/by-nc-sa/3.0/igo
+#     label: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO
+#   - value: https://creativecommons.org/licenses/by-sa/3.0/igo
+#     label: Creative Commons Attribution-ShareAlike 3.0 IGO
+#   - value: https://creativecommons.org/licenses/by/4.0/
+#     label: Creative Commons Attribution 4.0
+#   - value: https://creativecommons.org/licenses/by-sa/4.0/
+#     label: Creative Commons Attribution Share-Alike 4.0
+#   - value: https://creativecommons.org/publicdomain/zero/1.0/
+#     label: CC0 1.0
+#   - value: https://opendefinition.org/licenses/dsl
+#     label: Design Science License
+#   - value: https://opendefinition.org/licenses/fal
+#     label: Free Art License 1.3
+#   - value: https://opendefinition.org/licenses/gfdl
+#     label: GNU Free Documentation License 1.3 with no cover texts and no invariant sections
+#   - value: https://opensource.org/licenses/MirOS
+#     label: MirOS Licence
+#   - value: https://opendefinition.org/licenses/odc-by
+#     label: Open Data Commons Attribution License 1.0
+#   - value: https://opendefinition.org/licenses/odc-odbl
+#     label: Open Data Commons Open Database License 1.0
+#   - value: https://open.canada.ca/en/open-government-licence-canada
+#     label: Open Government License 2.0 (Canada)
+#   - value: https://opendefinition.org/licenses/odc-by
+#     label: Open Data Commons Attribution License 1.0
+#   - value: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/
+#     label: Open Government Licence 2.0 (United Kingdom)
+#   - value: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+#     label: Open Government Licence 3.0 (United Kingdom)
+#   - value: https://opendefinition.org/licenses/odc-pddl
+#     label: Open Data Commons Public Domain Dedication and Licence 1.0
+#   - value: https://opendefinition.org/licenses/tcl
+#     label: Talis Community License
+#   - value: https://web.archive.org/web/20131009082944/http://www.hesa.ac.uk/index.php?option=com_content&task=view&id=2619&Itemid=209
+#     label: Higher Education Statistics Agency Copyright with data.gov.uk rights
+#   - value:
+#     label: Local Authority Copyright with data.gov.uk rights
+#   - value:
+#     label: Other (Open)
+#   - value:
+#     label: Other (Public Domain)
+#   - value:
+#     label: UK Crown Copyright with data.gov.uk rights
+
+# #- field_name: accessRights
+# #  label: Access rights
+# #  help_text: This property contains a URL that gives access to a Distribution of the Dataset. The resource at the access URL may contain information about how to get the Distribution.
+
+# #- field_name: accessService
+# #  label: Access Service
+# #  help_text: This property refers to a Data Service that gives access to the Distribution of the Dataset.
+
+# - field_name: downloadURL
+#   label: Download URL
+#   preset: multiple_text
+#   help_text: This property contains a URL that is a direct link to a downloadable file in a given format.
+
+# - field_name: hasPolicy
+#   label: Has policy
+#   help_text: This property contains a URL that is a direct link to a downloadable file in a given format.
+
+# - field_name: language
+#   label: Language
+#   preset: multiple_checkbox
+#   choices:
+#   - value: ARA
+#     label: Arabic
+#   - value: ZHO
+#     label: Chinese
+#   - value: ENG
+#     label: English
+#   - value: FRA
+#     label: French
+#   - value: RUS
+#     label: Russian
+#   - value: SPA
+#     label: Spanish
+
+# - field_name: representationTechnique
+#   label: Representation technique
+#   help_text: In GeoDCAT-AP, this property SHOULD be used to express the spatial representation type (grid, vector, tin), by using the URIs of the corresponding code list operated by the INSPIRE Registry [INSPIRE-SRT].
+
+# - field_name: conformsTo
+#   label: Conforms to
+#   preset: multiple_text
+#   help_text: This property refers to an established schema to which the described Distribution conforms.
+
+
+# - field_name: rights
+#   label: Rights
+#   help_text: This property refers to a statement that specifies rights associated with the Distribution.
+
+# - field_name: hasQualityMeasurement
+#   label: Has quality measurement
+#   preset: multiple_text
+#   help_text: "In GeoDCAT-AP, this property is used to specify 'spatial resolution', as defined in [INSPIRE-MD-REG], [ISO-19115], and [ISO-19115-1]."
+
+# - field_name: spatialResolutionInMeters
+#   label: Spatial resolution in meters
+#   preset: multiple_text
+#   help_text: This property refers to the minimum spatial separation resolvable in a Distribution, measured in metres.
+
+# - field_name: temporalResolution
+#   label: Temporal resolution
+#   help_text: This property refers to the minimum time period resolvable in the Distribution.

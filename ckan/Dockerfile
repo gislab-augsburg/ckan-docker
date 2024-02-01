@@ -24,7 +24,7 @@ RUN set -ex && \
 ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     scheming_datasets scheming_groups scheming_organizations \
     spatial_metadata spatial_query spatial_harvest_metadata_api \
-    composite hierarchy_display hierarchy_form lhm lhm_theme \
+    composite hierarchy_display hierarchy_form lhm \
     resourcedictionary datastore xloader hierarchy_group_form \
     password_policy resource_proxy geo_view geojson_view wmts_view shp_view \
     harvest ckan_harvester csw_harvester waf_harvester doc_harvester \
@@ -33,11 +33,27 @@ ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
 # CKAN configuration
 RUN set -ex && \
   ckan config-tool "${CKAN_INI}" "ckan.plugins = ${CKAN__PLUGINS}" && \
-  ckan config-tool "${CKAN_INI}" "scheming.dataset_fallback = false" && \
-  ckan config-tool "${CKAN_INI}" "scheming.presets = ckanext.scheming:presets.json ckanext.repeating:presets.json ckanext.composite:presets.json ckanext.lhm:schemas/presets.yaml" && \
-  ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml"
+  #ckan config-tool "${CKAN_INI}" "scheming.dataset_fallback = false" && \
+  #ckan config-tool "${CKAN_INI}" "scheming.presets = ckanext.scheming:presets.json ckanext.repeating:presets.json ckanext.composite:presets.json ckanext.lhm:schemas/presets.yaml" && \
+  #ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml" && \ 
+  ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.scheming:iso.yaml" && \ 
+  ckan config-tool "${CKAN_INI}" "scheming.presets = ckanext.scheming:presets_iso.json" && \
+  ckan config-tool "${CKAN_INI}" "ckan.default.package_type = iso19115" && \ 
+  ckan config-tool "${CKAN_INI}" "ckan.spatial.validator.profiles = iso19139eden" && \
+  ckan config-tool "${CKAN_INI}" "ckanext.spatial.harvest.continue_on_validation_errors = true" && \
+  ckan config-tool "${CKAN_INI}" "ckan.locale_default = de"
+  #ckanext.spatial.harvest.user_name = harvest
+  #ckanext.spatial.harvest.reindex_unchanged = False
+  #ckan.locale_default = de
 
 # Install dev-requirements
 RUN pip install -r /srv/app/src/ckan/dev-requirements.txt 
+
+# Dev Copy edited spatial/harvesters/base.py
+COPY dev_csw/base.py /usr/local/lib/python3.8/dist-packages/ckanext/spatial/harvesters/base.py
+
+# Dev Copy Iso schema and presets
+COPY dev_csw/iso.yaml /usr/local/lib/python3.8/dist-packages/ckanext/scheming/iso.yaml
+COPY dev_csw/presets_iso.json /usr/local/lib/python3.8/dist-packages/ckanext/scheming/presets_iso.json
 
 USER ckan
