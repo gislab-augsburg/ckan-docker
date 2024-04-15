@@ -1,4 +1,4 @@
-FROM ghcr.io/it-at-m/ckan-sddi-urban:latest
+FROM ghcr.io/it-at-m/ckan-sddi-urban:udp-katalog-1.1.4-dev
 
 USER root
 
@@ -24,13 +24,20 @@ ENV CKAN__PLUGINS "image_view text_view recline_view webpage_view \
     resourcedictionary datastore xloader hierarchy_group_form \
     password_policy resource_proxy geo_view geojson_view wmts_view shp_view \
     harvest ckan_harvester csw_harvester waf_harvester doc_harvester \
-    envvars"
+    gdpr iso envvars"
 
 # CKAN configuration
 RUN set -ex && \
   ckan config-tool "${CKAN_INI}" "ckan.plugins = ${CKAN__PLUGINS}" && \
   ckan config-tool "${CKAN_INI}" "scheming.dataset_fallback = false" && \
   ckan config-tool "${CKAN_INI}" "scheming.presets = ckanext.scheming:presets.json ckanext.repeating:presets.json ckanext.composite:presets.json ckanext.lhm:schemas/presets.yaml" && \
-  ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml"
+  #ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml" && \
+  ckan config-tool "${CKAN_INI}" "ckan.default.package_type = dataset" && \
+# ckanext-iso
+  ckan config-tool "${CKAN_INI}" "scheming.dataset_schemas = ckanext.lhm:schemas/lhm_dataset.yaml ckanext.iso:lhm_isodata.yaml" && \
+  ckan config-tool "${CKAN_INI}" "ckan.spatial.validator.profiles = iso19139eden" && \
+  ckan config-tool "${CKAN_INI}" "ckanext.spatial.harvest.continue_on_validation_errors = true" && \
+  ckan config-tool "${CKAN_INI}" "ckan.locale_default = de" && \
+  ckan config-tool "${CKAN_INI}" "ckanext.iso.mapping_orgas = /srv/app/src/ckanext-iso/ckanext/iso/mapping_orgas.json"
 
 USER ckan
