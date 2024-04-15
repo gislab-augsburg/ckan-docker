@@ -1,4 +1,4 @@
-FROM ghcr.io/it-at-m/ckan-sddi-urban:latest
+FROM ghcr.io/it-at-m/ckan-sddi-urban:udp-katalog-1.1.4-dev
 
 USER root
 
